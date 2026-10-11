@@ -26,6 +26,7 @@ export GEMINI_API_KEY="your-key"
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r agent/requirements.txt
+cd agent
 python3 -m gani_agent --port 8765
 ```
 
