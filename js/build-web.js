@@ -37,7 +37,7 @@ function cpFiltered(from, to, skip) {
 rm(dist);
 
 ['index.html', 'favicon.ico', 'example-theme.css', 'changelog.json'].forEach(f => cp(f));
-['ganis', 'icons', 'images', 'sounds', 'vendor', 'js', 'css', 'levels', 'objects'].forEach(d => cp(d));
+['ganis', 'icons', 'images', 'sounds', 'vendor', 'js', 'css', 'levels', 'objects', 'ai-bridge'].forEach(d => cp(d));
 cp('runtime.js', 'wails/runtime.js');
 cp('frontend/bindings', 'bindings');
 cpFiltered('fonts', 'fonts', f => /MesloLGS/i.test(f));
