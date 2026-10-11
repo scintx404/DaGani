@@ -1,0 +1,4 @@
+numpy>=1.26
+opencv-python-headless>=4.9
+websockets>=12
+# tests: zero-dep runner in tests/run_tests.py; pytest optional

@@ -1,0 +1,14 @@
+# gani-agent config. Pin the model here; re-run the eval harness when you change it.
+[llm]
+provider = "anthropic"            # or "openai" / any OpenAI-compatible endpoint
+model = ""                        # REQUIRED: set to the current frontier multimodal model you want
+api_key_env = "ANTHROPIC_API_KEY"
+max_tokens = 8000
+# base_url = "http://127.0.0.1:11434/v1"   # e.g. Ollama for offline later
+
+[server]
+host = "127.0.0.1"
+port = 8765
+
+[critic]
+max_rounds = 3
