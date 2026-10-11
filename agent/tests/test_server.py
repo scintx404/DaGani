@@ -1,6 +1,6 @@
 import json
 
-from gani_agent.server import build_router
+from gani_agent.server import STALE_REV, build_router
 
 
 def _call(router, method, params=None, rid=1):
@@ -34,6 +34,6 @@ def test_transaction_rollback_restores_base_revision():
     assert _call(router, "ping")["result"]["rev"] == 0
 
 
-def test_invalid_params_are_json_rpc_errors():
+def test_invalid_revision_is_rejected():
     result = _call(build_router(), "gani.apply", {"snapshot": {}, "base_rev": "bad", "ops": []})
-    assert result["error"]["code"] == -32602
+    assert result["error"]["code"] == STALE_REV
