@@ -42,45 +42,37 @@ class Router:
   except Exception:log.exception("rpc failure");err={"code":-32603,"message":"internal error"}
   return json.dumps({"jsonrpc":"2.0","id":rid,"error":err})
 def _parse_simple_toml(text):
- res = {}
- cur = res
+ res={};cur=res
  for line in text.splitlines():
-  l = line.strip()
-  if not l or l.startswith("#"): continue
-  if l.startswith("[") and l.endswith("]"):
-   sec = l[1:-1].strip()
-   res[sec] = {}
-   cur = res[sec]
-   continue
+  l=line.strip()
+  if not l or l.startswith("#"):continue
+  if l.startswith("[") and l.endswith("]"):res[l[1:-1].strip()]={};cur=res[l[1:-1].strip()];continue
   if "=" in l:
-   k, v = l.split("=", 1)
-   k = k.strip()
-   v = v.split("#")[0].strip().strip('"').strip("'")
-   if v.isdigit(): v = int(v)
-   elif v.lower() == "true": v = True
-   elif v.lower() == "false": v = False
-   cur[k] = v
+   k,v=l.split("=",1);v=v.split("#")[0].strip().strip('"').strip("'");cur[k.strip()]=int(v) if v.isdigit() else True if v.lower()=="true" else False if v.lower()=="false" else v
  return res
 def _cfg():
  p=(Path(__file__).parent.parent/"config.toml").resolve()
  try:
-  if tomllib: return tomllib.loads(p.read_text(encoding="utf-8"))
+  if tomllib:return tomllib.loads(p.read_text(encoding="utf-8"))
   return _parse_simple_toml(p.read_text(encoding="utf-8"))
- except Exception:return {"llm":{"provider":"gemini","model":os.environ.get("GANI_AGENT_MODEL","gemini-3.8-flash")},"critic":{"max_rounds":3}}
-def _pipeline():
- cfg=_cfg();llm=Provider(cfg.get("llm",{}));db=Path(os.environ.get("GANI_CORPUS_DB",str(Path(__file__).parents[1]/"corpus.sqlite")));return Orchestrator(llm,Corpus(db),HeadlessRenderer(),int(cfg.get("critic",{}).get("max_rounds",3)))
+ except Exception:return {"llm":{"provider":"gemini","model":os.environ.get("GANI_AGENT_MODEL","gemini-3.8-flash"),"api_key_env":"GEMINI_API_KEY"},"critic":{"max_rounds":3}}
+def _pipeline(model=None,provider=None):
+ cfg=_cfg();llm_cfg=dict(cfg.get("llm",{}))
+ if provider:llm_cfg["provider"]=str(provider).lower()
+ if model:llm_cfg["model"]=str(model)
+ llm=Provider(llm_cfg);db=Path(os.environ.get("GANI_CORPUS_DB",str(Path(__file__).parents[1]/"corpus.sqlite")));return Orchestrator(llm,Corpus(db),HeadlessRenderer(),int(cfg.get("critic",{}).get("max_rounds",3)))
 async def _on_prompt(session,p):
  prompt=str(p.get("prompt","")).strip()
  if not prompt:raise EditorError(-32602,"prompt is required")
  snap=await session.snapshot();category=p.get("category") or guess_category(prompt);pipe=PipelineSession(doc=G.from_snapshot(snap),catalog=snap.get("sprites",[]),sheet_png=p.get("sprite_sheet"))
- try:orch=_pipeline()
+ try:orch=_pipeline(p.get("model"),p.get("provider"))
  except LLMError as e:raise EditorError(-32020,str(e))
- await session.notify("copilot.progress",{"stage":"planning","message":"Retrieving Graal references and planning frames"})
+ await session.notify("copilot.progress",{"stage":"planning","message":f"Planning with {orch.llm.model}"})
  try:
   await orch.generate(pipe,prompt,category,p.get("selection"),p.get("idle"));await session.notify("copilot.progress",{"stage":"qa","message":"Running metrics and critic refinement"})
   result=await orch.correct(pipe,static_ids=set(orch.corpus.category_stats(category).get("static_ids",[])),intent=prompt);tx=await session.tx_begin("AI Copilot proposal")
-  await session.call("gani.load",{"gani":result["gani"],"proposal":True,"txId":tx});await session.notify("copilot.progress",{"stage":"ready","message":"Proposal ready for review","trace":pipe.trace})
-  return {"ok":True,"txId":tx,"category":category,"frames":result["frames"],"total_ms":result["total_ms"],"verdict":result["verdict"],"metrics":result["metrics"],"trace":pipe.trace}
+  await session.call("gani.load",{"gani":result["gani"],"proposal":True,"txId":tx});await session.notify("copilot.progress",{"stage":"ready","message":f"Proposal ready with {orch.llm.model}","trace":pipe.trace})
+  return {"ok":True,"txId":tx,"category":category,"model":orch.llm.model,"frames":result["frames"],"total_ms":result["total_ms"],"verdict":result["verdict"],"metrics":result["metrics"],"trace":pipe.trace}
  except EditorError:raise
  except Exception as e:log.exception("generation failed");await session.notify("copilot.progress",{"stage":"error","message":str(e)});raise EditorError(-32021,str(e))
 def build_router():
@@ -108,48 +100,29 @@ def build_router():
   self.snapshot_doc=self.tx["base"];self.tx=None;return {"ok":True,"rev":self.rev}
  return r
 def load_token(path=TOKEN_FILE,rotate=False):
- repo_token = Path(__file__).resolve().parents[2]/".gani-agent"/"token"
- t = None
+ repo_token=Path(__file__).resolve().parents[2]/".gani-agent"/"token";t=None
  if path.exists() and not rotate:
-  try:
-   t = path.read_text().strip()
-   if len(t) < 24: t = None
-  except Exception: pass
+  try:t=path.read_text().strip();t=t if len(t)>=24 else None
+  except Exception:pass
  if not t and repo_token.exists() and not rotate:
-  try:
-   t = repo_token.read_text().strip()
-   if len(t) < 24: t = None
-  except Exception: pass
- if not t:
-  t = secrets.token_urlsafe(24)
- for p in (path, repo_token):
-  try:
-   p.parent.mkdir(parents=True, exist_ok=True)
-   p.write_text(t)
-   try: p.chmod(0o600)
-   except OSError: pass
-  except OSError: pass
+  try:t=repo_token.read_text().strip();t=t if len(t)>=24 else None
+  except Exception:pass
+ if not t:t=secrets.token_urlsafe(24)
+ for p in (path,repo_token):
+  try:p.parent.mkdir(parents=True,exist_ok=True);p.write_text(t);p.chmod(0o600)
+  except OSError:pass
  return t
 def origin_allowed(origin):return origin is None or origin.startswith(("wails://wails","http://wails.localhost","https://wails.localhost","http://localhost","http://127.0.0.1"))
 def _origin(ws):
  h=getattr(getattr(ws,"request",None),"headers",None) or getattr(ws,"request_headers",None);return h.get("Origin") if h else None
 async def serve(router,host="127.0.0.1",port=8765,rotate_token=False,web_port=13772):
- import http
- import websockets
+ import http,websockets
  token=load_token(rotate=rotate_token);log.info("gani-agent listening on ws://%s:%d",host,port)
- def process_request(connection, request):
-  upgrade = request.headers.get("Upgrade", "")
-  if upgrade.lower() != "websocket":
-   req_path = getattr(request, "path", "/")
-   if req_path in ("/token", "/.gani-agent/token"):
-    resp = connection.respond(http.HTTPStatus.OK, token)
-    resp.headers["Content-Type"] = "text/plain; charset=utf-8"
-    resp.headers["Access-Control-Allow-Origin"] = "*"
-    return resp
-   redirect_url = f"http://localhost:{web_port}/"
-   resp = connection.respond(http.HTTPStatus.FOUND, f"Redirecting to GSuite Animation Editor at {redirect_url} ...")
-   resp.headers["Location"] = redirect_url
-   return resp
+ def process_request(connection,request):
+  if request.headers.get("Upgrade","").lower()!="websocket":
+   if getattr(request,"path","/") in ("/token","/.gani-agent/token"):
+    resp=connection.respond(http.HTTPStatus.OK,token);resp.headers["Content-Type"]="text/plain; charset=utf-8";resp.headers["Access-Control-Allow-Origin"]="*";return resp
+   resp=connection.respond(http.HTTPStatus.FOUND,f"Redirecting to GSuite Animation Editor at http://localhost:{web_port}/ ...");resp.headers["Location"]=f"http://localhost:{web_port}/";return resp
   return None
  async def handler(ws):
   if not origin_allowed(_origin(ws)):await ws.close(code=1008);return
@@ -161,4 +134,3 @@ async def serve(router,host="127.0.0.1",port=8765,rotate_token=False,web_port=13
    async for msg in ws:session.dispatch(msg)
   finally:session.close();router.session=None
  async with websockets.serve(handler,host,port,process_request=process_request,max_size=16*1024*1024):await asyncio.Future()
-
