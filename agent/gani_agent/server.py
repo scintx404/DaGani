@@ -5,6 +5,7 @@ from pathlib import Path
 from . import gani as G
 from .corpus import Corpus,guess_category
 from .llm import Provider,LLMError
+from .ops import apply_ops
 from .orchestrator import Orchestrator,Session as PipelineSession
 from .renderer import HeadlessRenderer
 from .session import EditorSession,EditorError
@@ -34,32 +35,25 @@ class Router:
   except Exception:log.exception("rpc failure");err={"code":-32603,"message":"internal error"}
   return json.dumps({"jsonrpc":"2.0","id":rid,"error":err})
 def _cfg():
- p=Path(__file__).with_name("..")/"config.toml"; p=p.resolve();
+ p=(Path(__file__).parent.parent/"config.toml").resolve()
  try:return tomllib.loads(p.read_text())
- except Exception:return {"llm":{"provider":"openai","model":os.environ.get("GANI_AGENT_MODEL",""),"api_key_env":"OPENAI_API_KEY"},"critic":{"max_rounds":3}}
+ except Exception:return {"llm":{"provider":"openai","model":os.environ.get("GANI_AGENT_MODEL","")},"critic":{"max_rounds":3}}
 def _pipeline():
- cfg=_cfg(); llm=Provider(cfg.get("llm",{})); db=Path(os.environ.get("GANI_CORPUS_DB",str(Path(__file__).parents[1]/"corpus.sqlite"))); corpus=Corpus(db); return Orchestrator(llm,corpus,HeadlessRenderer(),int(cfg.get("critic",{}).get("max_rounds",3)))
+ cfg=_cfg();llm=Provider(cfg.get("llm",{}));db=Path(os.environ.get("GANI_CORPUS_DB",str(Path(__file__).parents[1]/"corpus.sqlite")));return Orchestrator(llm,Corpus(db),HeadlessRenderer(),int(cfg.get("critic",{}).get("max_rounds",3)))
 async def _on_prompt(session,p):
  prompt=str(p.get("prompt","")).strip()
  if not prompt:raise EditorError(-32602,"prompt is required")
- snap=await session.snapshot(); catalog=snap.get("sprites",[]); category=p.get("category") or guess_category(prompt)
- doc=G.from_snapshot(snap); pipe=PipelineSession(doc=doc,catalog=catalog,sheet_png=p.get("sprite_sheet"))
- try: orch=_pipeline()
+ snap=await session.snapshot();category=p.get("category") or guess_category(prompt);pipe=PipelineSession(doc=G.from_snapshot(snap),catalog=snap.get("sprites",[]),sheet_png=p.get("sprite_sheet"))
+ try:orch=_pipeline()
  except LLMError as e:raise EditorError(-32020,str(e))
- selection=p.get("selection"); idle=p.get("idle")
  await session.notify("copilot.progress",{"stage":"planning","message":"Retrieving Graal references and planning frames"})
  try:
-  await orch.generate(pipe,prompt,category,selection,idle)
-  await session.notify("copilot.progress",{"stage":"qa","message":"Running deterministic metrics and critic refinement"})
-  result=await orch.correct(pipe,static_ids=set(orch.corpus.category_stats(category).get("static_ids",[])),intent=prompt)
-  tx=await session.tx_begin("AI Copilot proposal")
-  await session.call("gani.load",{"gani":result["gani"],"proposal":True,"txId":tx})
-  await session.notify("copilot.progress",{"stage":"ready","message":"Proposal ready for review","trace":pipe.trace})
+  await orch.generate(pipe,prompt,category,p.get("selection"),p.get("idle"));await session.notify("copilot.progress",{"stage":"qa","message":"Running metrics and critic refinement"})
+  result=await orch.correct(pipe,static_ids=set(orch.corpus.category_stats(category).get("static_ids",[])),intent=prompt);tx=await session.tx_begin("AI Copilot proposal")
+  await session.call("gani.load",{"gani":result["gani"],"proposal":True,"txId":tx});await session.notify("copilot.progress",{"stage":"ready","message":"Proposal ready for review","trace":pipe.trace})
   return {"ok":True,"txId":tx,"category":category,"frames":result["frames"],"total_ms":result["total_ms"],"verdict":result["verdict"],"metrics":result["metrics"],"trace":pipe.trace}
- except Exception as e:
-  log.exception("generation failed")
-  await session.notify("copilot.progress",{"stage":"error","message":str(e)})
-  raise EditorError(-32021,str(e))
+ except EditorError:raise
+ except Exception as e:log.exception("generation failed");await session.notify("copilot.progress",{"stage":"error","message":str(e)});raise EditorError(-32021,str(e))
 def build_router():
  r=Router()
  @r.method("ping")
@@ -70,7 +64,7 @@ def build_router():
  def apply(self,snapshot,base_rev=None,baseRev=None,ops=None):
   base=base_rev if base_rev is not None else baseRev
   if base!=self.rev:raise RpcError(STALE_REV,"state changed since snapshot; re-snapshot and retry",{"rev":self.rev})
-  d=G.from_snapshot(snapshot); self.rev+=1; self.snapshot_doc=d; return {"rev":self.rev,"gani":G.serialize(d),"applied":len(ops or [])}
+  d=apply_ops(G.from_snapshot(snapshot),ops or []);self.rev+=1;self.snapshot_doc=d;return {"rev":self.rev,"gani":G.serialize(d),"applied":len(ops or [])}
  @r.method("tx.begin")
  def begin(self,label="AI edit"):
   if self.tx:raise RpcError(-32011,"a transaction is already open")
@@ -99,8 +93,7 @@ async def serve(router,host="127.0.0.1",port=8765,rotate_token=False):
   if not origin_allowed(_origin(ws)):await ws.close(code=1008);return
   try:first=json.loads(await ws.recv())
   except Exception:await ws.close();return
-  if not isinstance(first,dict) or not hmac.compare_digest(str(first.get("auth","")),token):
-   await ws.send(json.dumps({"jsonrpc":"2.0","id":None,"error":{"code":UNAUTHORIZED,"message":"unauthorized"}}));await ws.close();return
+  if not isinstance(first,dict) or not hmac.compare_digest(str(first.get("auth","")),token):await ws.close();return
   session=EditorSession(ws.send,router);router.session=session;session.on_prompt=_on_prompt
   try:
    async for msg in ws:session.dispatch(msg)
