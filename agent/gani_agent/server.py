@@ -1,9 +1,4 @@
-"""JSON-RPC 2.0 over WebSocket on loopback, token-protected.
-
-The editor is the client; this process is the server. Token is written to
-~/.gani-agent/token on start (the editor reads it from there via the Tauri/Wails shell).
-Requires: pip install websockets
-"""
+"""JSON-RPC 2.0 over a loopback WebSocket with token authentication."""
 from __future__ import annotations
 
 import hmac
@@ -30,13 +25,13 @@ UNAUTHORIZED = -32001
 
 
 class Router:
-    """Holds the method table + transaction state. Transport-independent, easy to unit test."""
+    """Transport-independent JSON-RPC method table and transaction state."""
 
     def __init__(self):
         self.methods: dict[str, callable] = {}
         self.rev = 0
         self.snapshot_doc: G.GaniDoc | None = None
-        self.tx: dict | None = None      # {"id", "base": GaniDoc, "label": str}
+        self.tx: dict | None = None
 
     def method(self, name):
         def deco(fn):
@@ -49,12 +44,17 @@ class Router:
             req = json.loads(raw)
         except json.JSONDecodeError:
             return json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "parse error"}})
+        if not isinstance(req, dict):
+            return json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "invalid request"}})
         rid = req.get("id")
         fn = self.methods.get(req.get("method", ""))
         try:
             if fn is None:
                 raise RpcError(-32601, f"method not found: {req.get('method')}")
-            result = fn(self, **(req.get("params") or {}))
+            params = req.get("params") or {}
+            if not isinstance(params, dict):
+                raise RpcError(-32602, "params must be an object")
+            result = fn(self, **params)
             if rid is None:
                 return None
             return json.dumps({"jsonrpc": "2.0", "id": rid, "result": result})
@@ -62,14 +62,20 @@ class Router:
             err = {"code": e.code, "message": str(e)}
             if e.data is not None:
                 err["data"] = e.data
-        except OpError as e:
+        except (OpError, ValueError, KeyError, IndexError) as e:
             err = {"code": -32602, "message": str(e)}
         except TypeError as e:
             err = {"code": -32602, "message": f"bad params: {e}"}
-        except Exception:  # never leak a traceback to the editor
+        except Exception:
             log.exception("rpc failure")
             err = {"code": -32603, "message": "internal error"}
         return json.dumps({"jsonrpc": "2.0", "id": rid, "error": err})
+
+
+def _snapshot_payload(doc: G.GaniDoc | None, rev: int):
+    if doc is None:
+        return {"rev": rev, "gani": None}
+    return {"rev": rev, "gani": G.serialize(doc)}
 
 
 def build_router() -> Router:
@@ -78,6 +84,14 @@ def build_router() -> Router:
     @r.method("ping")
     def _ping(self):
         return {"ok": True, "rev": self.rev}
+
+    @r.method("gani.snapshot")
+    def _snapshot(self, snapshot: dict | None = None):
+        """Sync the editor's current state into the sidecar, or read the last state."""
+        if snapshot is not None:
+            self.snapshot_doc = G.from_snapshot(snapshot)
+            self.rev = int(snapshot.get("rev", self.rev))
+        return _snapshot_payload(self.snapshot_doc, self.rev)
 
     @r.method("gani.validate")
     def _validate(self, text: str):
@@ -88,7 +102,6 @@ def build_router() -> Router:
 
     @r.method("gani.apply")
     def _apply(self, snapshot: dict, base_rev: int, ops: list):
-        """Apply ops to the snapshot. Rejects stale revisions so we never fight a user edit."""
         if base_rev != self.rev:
             raise RpcError(STALE_REV, "state changed since snapshot; re-snapshot and retry", {"rev": self.rev})
         doc = G.from_snapshot(snapshot)
@@ -101,44 +114,48 @@ def build_router() -> Router:
     def _tx_begin(self, label: str = "AI edit"):
         if self.tx:
             raise RpcError(-32011, "a transaction is already open")
-        self.tx = {"id": secrets.token_hex(4), "base": self.snapshot_doc, "label": label}
-        return {"tx": self.tx["id"]}
+        self.tx = {"id": secrets.token_hex(4), "base": self.snapshot_doc, "base_rev": self.rev, "label": label}
+        return {"tx": self.tx["id"], "rev": self.rev}
 
     @r.method("tx.commit")
     def _tx_commit(self, tx: str):
         if not self.tx or self.tx["id"] != tx:
             raise RpcError(-32012, "unknown transaction")
         self.tx = None
-        return {"ok": True}
+        return {"ok": True, "rev": self.rev}
 
     @r.method("tx.rollback")
     def _tx_rollback(self, tx: str):
         if not self.tx or self.tx["id"] != tx:
             raise RpcError(-32012, "unknown transaction")
         self.snapshot_doc = self.tx["base"]
+        self.rev = self.tx["base_rev"]
         self.tx = None
-        return {"ok": True, "rev": self.rev}
+        return {"ok": True, **_snapshot_payload(self.snapshot_doc, self.rev)}
 
     return r
 
 
 async def serve(router: Router, host: str = "127.0.0.1", port: int = 8765):
     import asyncio
-
-    import websockets  # imported lazily so tests don't need it
+    import os
+    import websockets
 
     token = secrets.token_urlsafe(24)
     TOKEN_FILE.parent.mkdir(parents=True, exist_ok=True)
     TOKEN_FILE.write_text(token)
+    try:
+        os.chmod(TOKEN_FILE, 0o600)
+    except OSError:
+        pass
 
     async def handler(ws):
-        # first message must be {"auth": token}
         try:
             first = json.loads(await ws.recv())
         except Exception:
             await ws.close()
             return
-        if not hmac.compare_digest(str(first.get("auth", "")), token):
+        if not isinstance(first, dict) or not hmac.compare_digest(str(first.get("auth", "")), token):
             await ws.send(json.dumps({"jsonrpc": "2.0", "id": None,
                                       "error": {"code": UNAUTHORIZED, "message": "unauthorized"}}))
             await ws.close()
