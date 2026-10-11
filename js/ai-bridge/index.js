@@ -1,0 +1,6 @@
+import {EditorAdapter} from "./EditorAdapter.js";
+import {RpcPeer} from "./rpc.js";
+import {renderSheet,metricsRaw} from "./render.js";
+import {runProbe} from "./probe.js";
+const enabled=()=>{try{return localStorage.getItem("ganiAgent")==="1"||/[?&]agent=1\\b/.test(location.search)}catch{return false}};
+export function initAiBridge({url="ws://127.0.0.1:8765"}={}){if(!enabled())return null;const adapter=new EditorAdapter();let ws,peer;const start=()=>{ws=new WebSocket(url);peer=new RpcPeer(s=>ws.readyState===1&&ws.send(s));peer.register("gani.snapshot",()=>adapter.snapshot()).register("gani.apply",p=>{const r=adapter.applyOps(p.ops||[],{baseRev:p.baseRev??p.base_rev,label:p.label});peer.notify("state.changed",{rev:r.rev,by:"agent",ops:p.ops});return r}).register("gani.load",p=>adapter.load(p.text)).register("tx.begin",p=>adapter.txBegin(p.label)).register("tx.commit",p=>adapter.txCommit(p.txId??p.tx)).register("tx.rollback",p=>adapter.txRollback(p.txId??p.tx)).register("render.sheet",p=>renderSheet(adapter.current().ani,p)).register("metrics.raw",p=>metricsRaw(adapter.current().ani,p)).register("editor.probe",runProbe);ws.onopen=()=>ws.send(JSON.stringify({auth:localStorage.getItem("ganiAgent.token")||""}));ws.onmessage=e=>peer.handle(e.data);ws.onclose=()=>setTimeout(start,2000);};start();return{adapter,probe:runProbe};}
