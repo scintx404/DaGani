@@ -1,6 +1,13 @@
 """Authenticated loopback WebSocket server for the GANI Copilot."""
 from __future__ import annotations
-import asyncio,hmac,json,logging,os,secrets,tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:
+    try:
+        import tomli as tomllib
+    except ModuleNotFoundError:
+        tomllib = None
+import asyncio,hmac,json,logging,os,secrets
 from pathlib import Path
 from . import gani as G
 from .corpus import Corpus,guess_category
@@ -34,10 +41,32 @@ class Router:
   except (ValueError,KeyError,IndexError,TypeError) as e:err={"code":-32602,"message":str(e)}
   except Exception:log.exception("rpc failure");err={"code":-32603,"message":"internal error"}
   return json.dumps({"jsonrpc":"2.0","id":rid,"error":err})
+def _parse_simple_toml(text):
+ res = {}
+ cur = res
+ for line in text.splitlines():
+  l = line.strip()
+  if not l or l.startswith("#"): continue
+  if l.startswith("[") and l.endswith("]"):
+   sec = l[1:-1].strip()
+   res[sec] = {}
+   cur = res[sec]
+   continue
+  if "=" in l:
+   k, v = l.split("=", 1)
+   k = k.strip()
+   v = v.split("#")[0].strip().strip('"').strip("'")
+   if v.isdigit(): v = int(v)
+   elif v.lower() == "true": v = True
+   elif v.lower() == "false": v = False
+   cur[k] = v
+ return res
 def _cfg():
  p=(Path(__file__).parent.parent/"config.toml").resolve()
- try:return tomllib.loads(p.read_text())
- except Exception:return {"llm":{"provider":"openai","model":os.environ.get("GANI_AGENT_MODEL","")},"critic":{"max_rounds":3}}
+ try:
+  if tomllib: return tomllib.loads(p.read_text(encoding="utf-8"))
+  return _parse_simple_toml(p.read_text(encoding="utf-8"))
+ except Exception:return {"llm":{"provider":"gemini","model":os.environ.get("GANI_AGENT_MODEL","gemini-3.8-flash")},"critic":{"max_rounds":3}}
 def _pipeline():
  cfg=_cfg();llm=Provider(cfg.get("llm",{}));db=Path(os.environ.get("GANI_CORPUS_DB",str(Path(__file__).parents[1]/"corpus.sqlite")));return Orchestrator(llm,Corpus(db),HeadlessRenderer(),int(cfg.get("critic",{}).get("max_rounds",3)))
 async def _on_prompt(session,p):
@@ -79,16 +108,49 @@ def build_router():
   self.snapshot_doc=self.tx["base"];self.tx=None;return {"ok":True,"rev":self.rev}
  return r
 def load_token(path=TOKEN_FILE,rotate=False):
+ repo_token = Path(__file__).resolve().parents[2]/".gani-agent"/"token"
+ t = None
  if path.exists() and not rotate:
-  t=path.read_text().strip()
-  if len(t)>=24:return t
- t=secrets.token_urlsafe(24);path.parent.mkdir(parents=True,exist_ok=True);path.write_text(t);path.chmod(0o600);return t
+  try:
+   t = path.read_text().strip()
+   if len(t) < 24: t = None
+  except Exception: pass
+ if not t and repo_token.exists() and not rotate:
+  try:
+   t = repo_token.read_text().strip()
+   if len(t) < 24: t = None
+  except Exception: pass
+ if not t:
+  t = secrets.token_urlsafe(24)
+ for p in (path, repo_token):
+  try:
+   p.parent.mkdir(parents=True, exist_ok=True)
+   p.write_text(t)
+   try: p.chmod(0o600)
+   except OSError: pass
+  except OSError: pass
+ return t
 def origin_allowed(origin):return origin is None or origin.startswith(("wails://wails","http://wails.localhost","https://wails.localhost","http://localhost","http://127.0.0.1"))
 def _origin(ws):
  h=getattr(getattr(ws,"request",None),"headers",None) or getattr(ws,"request_headers",None);return h.get("Origin") if h else None
-async def serve(router,host="127.0.0.1",port=8765,rotate_token=False):
+async def serve(router,host="127.0.0.1",port=8765,rotate_token=False,web_port=13772):
+ import http
  import websockets
  token=load_token(rotate=rotate_token);log.info("gani-agent listening on ws://%s:%d",host,port)
+ def process_request(connection, request):
+  upgrade = request.headers.get("Upgrade", "")
+  if upgrade.lower() != "websocket":
+   req_path = getattr(request, "path", "/")
+   if req_path in ("/token", "/.gani-agent/token"):
+    resp = connection.respond(http.HTTPStatus.OK, token)
+    resp.headers["Content-Type"] = "text/plain; charset=utf-8"
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    return resp
+   redirect_url = f"http://localhost:{web_port}/"
+   resp = connection.respond(http.HTTPStatus.FOUND, f"Redirecting to GSuite Animation Editor at {redirect_url} ...")
+   resp.headers["Location"] = redirect_url
+   return resp
+  return None
  async def handler(ws):
   if not origin_allowed(_origin(ws)):await ws.close(code=1008);return
   try:first=json.loads(await ws.recv())
@@ -98,4 +160,5 @@ async def serve(router,host="127.0.0.1",port=8765,rotate_token=False):
   try:
    async for msg in ws:session.dispatch(msg)
   finally:session.close();router.session=None
- async with websockets.serve(handler,host,port,max_size=16*1024*1024):await asyncio.Future()
+ async with websockets.serve(handler,host,port,process_request=process_request,max_size=16*1024*1024):await asyncio.Future()
+

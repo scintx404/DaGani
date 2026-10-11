@@ -1,9 +1,9 @@
 # GANI Copilot model configuration. Never commit API keys.
 [llm]
 # anthropic, openai, gemini, or any OpenAI-compatible local endpoint
-provider = "openai"
-model = ""
-api_key_env = "OPENAI_API_KEY"
+provider = "gemini"
+model = "gemini-3.8-flash"
+api_key_env = "AQ.Ab8RN6In-gc1IZ6X43V0c7gS6Ir7tmGQi41jRvq6flQQRQexqQ"
 max_tokens = 8000
 # Gemini example: provider = "gemini", model = "gemini-2.5-flash", api_key_env = "GEMINI_API_KEY"
 # Local example: provider = "openai", model = "qwen2.5-vl:7b", base_url = "http://127.0.0.1:11434/v1", api_key_env = "OLLAMA_API_KEY"
