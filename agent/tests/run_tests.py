@@ -42,5 +42,6 @@ def run(path):
 
 
 if __name__ == "__main__":
-    failed = run(ROOT / "tests" / "test_gani.py") + run(ROOT / "tests" / "test_pipeline.py")
+    files = ["test_gani.py", "test_pipeline.py", "test_server.py"]
+    failed = sum(run(ROOT / "tests" / name) for name in files)
     sys.exit(1 if failed else 0)
