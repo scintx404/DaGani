@@ -1,0 +1,34 @@
+{
+  "name": "gsuite",
+  "version": "0.1.85",
+  "description": "GSuite - A web-based suite of tools for development.",
+  "main": "anieditor.js",
+  "packageManager": "pnpm@10.14.0",
+  "scripts": {
+    "bump:patch": "node js/bump-version.js patch",
+    "version:set": "node js/bump-version.js set",
+    "dev": "pnpm run wails:assets && wails3 dev",
+    "build": "pnpm run wails:assets && wails3 build",
+    "wails:bindings": "go mod tidy && wails3 generate runtime -d . && node js/wails-bindings.js",
+    "wails:assets": "pnpm run wails:bindings && node js/build-web.js",
+    "build:wails": "node js/build-web.js",
+    "start": "node server.js",
+    "wails": "wails3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorenoLand/GScript.GSuite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MorenoLand/GScript.GSuite/issues"
+  },
+  "homepage": "https://github.com/MorenoLand/GScript.GSuite#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "monaco-editor": "^0.52.0"
+  }
+}

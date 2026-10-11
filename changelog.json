@@ -1,0 +1,775 @@
+[
+  {
+    "version": "0.1.85",
+    "date": "2026-09-11",
+    "tag": "GSuite",
+    "changes": [
+      "Script editor popups no longer close when clicking outside the editor",
+      "Restored bundled Monaco GraalScript syntax highlighting for Wails builds",
+      "Fixed the Wails workspace GANI browser opening scanned files through the browser File API",
+      "GANI open and import errors now identify invalid or encrypted files",
+      "Player nickname and chat labels use zoom-aware Tempus Sans emboldening",
+      "Added a local Android APK build task with the GSuite launcher icon",
+      "Configured the GSuite app icon in macOS and Android bundles",
+      "Updated the Wails runtime to v3.0.0-beta.11"
+    ]
+  },
+  {
+    "version": "0.1.84",
+    "date": "2026-08-20",
+    "tag": "GSuite",
+    "changes": [
+      "Migrated the desktop runtime from Tauri/Rust to Wails3/Go while preserving native file dialogs, file associations, updater, single-instance file opening, file-drop handling, workspace scanning, and FILENAMECACHE.txt restoration",
+      "Reduced the Windows executable with stripped linker output, trimpath, and UPX compression without removing project assets"
+    ]
+  },
+  {
+    "version": "0.1.83",
+    "date": "2026-07-20",
+    "tag": "GSuite",
+    "changes": [
+      "Updated the Tauri runtime and patched the bundled random-number dependency"
+    ]
+  },
+  {
+    "version": "0.1.82",
+    "date": "2026-07-20",
+    "tag": "GSuite",
+    "changes": [
+      "Toolbar tooltips now close when a tool is opened"
+    ]
+  },
+  {
+    "version": "0.1.81",
+    "date": "2026-07-19",
+    "tag": "GSuite",
+    "changes": [
+      "Particle Emulator particle type selector is easier to scan and use"
+    ]
+  },
+  {
+    "version": "0.1.80",
+    "date": "2026-07-15",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed Particle Emulator loading bundled particle images and safely handling invalid GIF frames"
+    ]
+  },
+  {
+    "version": "0.1.79",
+    "date": "2026-07-15",
+    "tag": "GSuite",
+    "changes": [
+      "Particle Emulator image picker now stays focused on particle assets while custom image names can use bundled and workspace images"
+    ]
+  },
+  {
+    "version": "0.1.78",
+    "date": "2026-07-15",
+    "tag": "GSuite",
+    "changes": [
+      "Particle Emulator can use bundled images and images from the loaded workspace"
+    ]
+  },
+  {
+    "version": "0.1.77",
+    "date": "2026-07-15",
+    "tag": "GSuite",
+    "changes": [
+      "Level Generator now downloads generated .nw levels and the .gmap together as a ZIP in the web app"
+    ]
+  },
+  {
+    "version": "0.1.76",
+    "date": "2026-07-15",
+    "tag": "GSuite",
+    "changes": [
+      "Added Level Generator map designer tab with example loading, built-in docs, and native terrain world generation",
+      "Added Level Generator map save, pan and zoom controls, grid toggle, and undo/redo",
+      "Added Particle Emulator tab for testing GS2 particle effects",
+      "Added setimgpart cut append and named comment shortcuts",
+      "Level editor play mode: configurable flower animation and object pickup, sign messages, bush hiding, swimming, and liftable bushes, vases, stones, and signs with carry and throw effects",
+      "Particle Emulator: added raw GS2 and visual editing views, playback controls, presets, and a live particle preview",
+      "Level Generator: added palette draw and flood-fill tools, map load/save, native .nw and .gmap world export, an example map, built-in docs, and undo/redo",
+      "Level editor play mode: brought over bush breaking, lift and throw behavior, hiding, swimming, sign dialogs, and animated flowers from the Godot example",
+      "Level editor settings: added switches for flower animation and liftable objects during play mode",
+      "Setshape2: added 1 to append another setimgpart cut and 2 to add an output comment name",
+      "Particle Emulator: added the Node Graph (Alpha) view with reconnectable particle, modifier, and value nodes",
+      "Particle Emulator: keeps the current script, visual editor, and graph state when reopening the tab",
+      "Particle Emulator: added animation export options for WebM, GIF, and Animated PNG",
+      "Level Generator: keeps the current map, edits, zoom, and pan position after reopening",
+      "Level Generator: generated gmap names now keep numbers from the filename prefix",
+      "Level editor: labeled the separate Saved Objects and Built-In Objects panels",
+      "Level Generator and Particle Emulator now follow the selected editor theme"
+    ]
+  },
+  {
+    "version": "0.1.75",
+    "date": "2026-07-06",
+    "tag": "GSuite",
+    "changes": [
+      "Removed unused desktop runtime plugins",
+      "Removed bundled Meslo fonts",
+      "Removed Monaco editor translation files",
+      "Added installed system fonts to editor font choices",
+      "Improved level editor redraws while dragging, resizing, and selecting",
+      "Improved level editor NPC image selection",
+      "Fixed animation sprite effect cache invalidation",
+      "Cached animation editor missing-sprite placeholders as a stretched bitmap",
+      "Stopped drawing missing-sprite placeholders and selection handles in animation timeline thumbnails"
+    ]
+  },
+  {
+    "version": "0.1.70",
+    "date": "2026-07-03",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed CI release publishing by restoring tauri-action so updater metadata is generated by the Tauri release flow"
+    ]
+  },
+  {
+    "version": "0.1.65",
+    "date": "2026-07-03",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed the animation editor preview timeline so native and canvas-drawn horizontal scrollbars only appear while hovering the preview bar",
+      "Fixed CI release publishing so compiled artifacts are attached to a GitHub Release instead of only being uploaded as workflow artifacts",
+      "Fixed CI auto builds by syncing Tauri Rust plugin lock versions with the installed JavaScript plugin versions",
+      "Movie Mode: so actor sub-ganis load from the workspace or bundled ganis and render instead of falling back to shadow-only placeholders",
+      "Fixed desktop GMAP saves so loaded GMAPs write their physical .gmap and level files back to disk instead of opening the browser ZIP export flow",
+      "Movie Mode: actor rendering so referenced sub-animations fall back to bundled default ganis and actor head/body/sword/shield/horse/attr/param values drive the rendered look",
+      "Movie Mode: text so actor chat and floating text use the exact same Tempus nickname/chat style as level editor play mode",
+      "Movie Mode: so non-looping actor sub-ganis clamp on their final frame instead of restarting forever",
+      "Movie Mode: actor appearance attrs so missing sword/shield/horse/attr values clear the sub-gani defaults while head/body/default images still resolve from bundled or workspace files",
+      "Movie Mode: so cached actor sub-gani placeholders obey the Show Placeholders setting immediately",
+      "Movie Mode: so sound actors no longer render as visible character actors",
+      "Movie Mode: so floating text and actor chat render above actors instead of being covered by them",
+      "Movie Mode: so actor names render as play-mode nickname labels instead of only appearing in the side panel",
+      "Movie Mode: actor names so labels stay anchored to the actor origin instead of shifting with animated sub-gani bounds",
+      "Movie Mode: actor name labels so they sit slightly farther right from the actor anchor",
+      "Ani Editor: and level editor shared GANI rendering so no-*.png defaults clear equipment slots instead of falling back to bundled defaults",
+      "Added Movie Mode actor and text add buttons to the animation timeline control bar",
+      "Movie Mode: item list so it populates with actors, text, sounds, and sprites present on the current frame and auto-selects an in-frame item",
+      "Movie Mode: nickname labels so they anchor below the actor bounding box instead of overlapping character sprites",
+      "Movie Mode: so projectile/effect actor frames like thrownhammer do not render nickname labels",
+      "Movie Mode: sub-gani loading so failed early lookups do not get cached permanently and loading flags are cleared for retries",
+      "Movie Mode: actor default overrides so missing param fields no longer wipe sub-gani PARAM defaults",
+      "Movie Mode: so PLAYSOUND entries inside actor sub-ganis play during playback",
+      "Ani Editor: sound playback so sub-gani sounds resolve from loaded workspace sounds and bundled editor sounds",
+      "Movie Mode: nickname shadow offsets so they use the active canvas transform and stay stable across zoom levels",
+      "Movie Mode: nickname layering so actor name labels render under the actor instead of being shifted downward over other sprites",
+      "Movie Mode: actor playerlook support so sub-gani appearance overrides follow the original GraalShop movie actor flag",
+      "Ani Editor: playback so pressing Space to pause and resume continues from the current frame instead of restarting the animation",
+      "Ani Editor: sprite image edits so changing a non-custom source image updates the animation default image used for rendering instead of only recording history",
+      "Ani Editor: sprite side panel so a single selected canvas sprite drives the edit target instead of a stale sprite-list selection",
+      "Ani Editor: sprite source and image fields so they mutate the same selected sprite targets the side panel is displaying",
+      "Improved animation GIF export palette selection for large frames",
+      "Fixed animation GIF export so large outputs are assembled in byte chunks instead of hitting invalid array length errors",
+      "Improved animation export so the button shows one inline spinner, the dialog shows progress text, and long GIF/MP4 exports yield instead of locking the app until completion",
+      "Added an animation export crop option that trims GIF output to visible pixels so offscreen or stray frame bounds do not create oversized transparent canvases",
+      "Fixed tab session restore so GANI files, levels, and utility tabs reopen after restarting the app instead of falling back to a blank new level",
+      "Added animation editor canvas level backgrounds from the GANI background swatch menu, including level selection, tileset override, drag positioning, nudge controls, reset, and persistence",
+      "Added a settings option to hide GANI editor guide lines and the origin guide square without hiding selection handles",
+      "Fixed the animation editor Movie Mode toolbar toggle so it uses normal toolbar button sizing",
+      "Improved Movie Mode actor/text add controls so the timeline buttons only appear in Movie Mode and use proper icons including the original actor glyph asset",
+      "Movie Mode: actor rendering so newly added actors resolve bundled default ganis such as idle and walk instead of showing only shadows",
+      "Movie Mode: actor selection so clicking empty canvas clears the selected actor instead of reselecting the first item",
+      "Movie Mode: timeline previews so actor nickname labels are hidden in thumbnails",
+      "Added Movie Mode Automatic Gani Setting so actor dragging only auto-switches to walk animation when the option is enabled"
+    ]
+  },
+  {
+    "version": "0.1.62",
+    "date": "2026-06-20",
+    "tag": "GSuite",
+    "changes": [
+      "Added an initial GANI Movie Mode in the animation editor with GANI0002 parse/save support, actor/text controls, frame-count editing, canvas selection, and frame-recorded actor dragging",
+      "Fixed web browser utility tabs so Code Beautify and Setshape2 fill the available page width instead of staying cramped to the left",
+      "Fixed the web browser Open Default dialog so the Ganis tab lists bundled ganis even before the animation editor has been opened"
+    ]
+  },
+  {
+    "version": "0.1.60",
+    "date": "2026-06-14",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed the level editor tileset dropdown so its list opens from a viewport-level menu instead of being clipped or covered by the right panel UI",
+      "Fixed right-click tile stamp cloning so floating stamps leave the original tiles behind instead of turning into a move operation",
+      "Added push-triggered CI that compiles GSuite automatically and bumps the app patch version before building",
+      "Synced release builds to the requested tag version across package, Tauri config, Cargo.toml, and Cargo.lock so uploaded installers no longer carry stale filenames"
+    ]
+  },
+  {
+    "version": "0.1.57",
+    "date": "2026-06-13",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed Edit Sprite so changing a custom sprite's image file now updates the actual sprite, including external images selected outside the workspace"
+    ]
+  },
+  {
+    "version": "0.1.56",
+    "date": "2026-06-10",
+    "tag": "GSuite",
+    "changes": [
+      "Gani selection handles now use consistent dot controls and screen-space overlay drawing so zoomed and rotated sprites keep cleaner editor chrome",
+      "CI now builds both Apple Silicon and Intel macOS targets"
+    ]
+  },
+  {
+    "version": "0.1.55",
+    "date": "2026-05-20",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed opening GMAP files outside the workspace so levels in the same folder load instead of showing as solid green"
+    ]
+  },
+  {
+    "version": "0.1.54",
+    "date": "2026-04-29",
+    "tag": "GSuite",
+    "changes": [
+      "The attach sprite preview now has an ATTACHSPRITE/ATTACHSPRITE2 label and supports Tab/Shift+Tab to cycle attached sprites",
+      "Sprite settings now start higher by default so the editor controls are easier to reach on shorter windows",
+      "Fixed duplicate GraalScript autocomplete entries in the GANI script editor by using the shared Monaco completion provider"
+    ]
+  },
+  {
+    "version": "0.1.53",
+    "date": "2026-04-29",
+    "tag": "GSuite",
+    "changes": [
+      "Sprite previews in the left list now show the same default images used on the canvas, so scripted/custom ganis no longer look blank when defaults are available",
+      "Sprite previews now include attached sprites, so characters built with ATTACHSPRITE show as a complete preview instead of only the parent piece",
+      "Rotating a parent sprite now rotates its attached sprites with it, matching the expected ROTATEEFFECT-style behavior",
+      "Dragging sprites with several ATTACHSPRITE children is smoother because attached sprite groups are cached while being redrawn",
+      "Fixed the Item dropdown sometimes showing an empty list even though the current frame has sprites",
+      "Undo and redo now refresh the canvas immediately, so changes no longer wait for an extra canvas click to appear"
+    ]
+  },
+  {
+    "version": "0.1.52",
+    "date": "2026-04-26",
+    "tag": "GSuite",
+    "changes": [
+      "Setshape2 Setimgpart mode now snaps to the visible grid level (1px/4px/16px) instead of always 16x16"
+    ]
+  },
+  {
+    "version": "0.1.51",
+    "date": "2026-04-26",
+    "tag": "GSuite",
+    "changes": [
+      "Show Placeholders toggle added to Settings dialog — hide the white box/red X for missing sprite images",
+      "Fixed sprite image lazy-load using workspacePathIndex cache before falling back to Rust resolve_path",
+      "Fixed redraw storm causing FPS lag when opening complex ganis with many missing images — loads now coalesce into a single frame",
+      "Failed image loads are now cached to prevent repeated resolve attempts until workspace is reloaded",
+      "Sprite list uses IntersectionObserver for lazy canvas rendering with 50+ sprites — major performance improvement",
+      "Fixed level editor intercepting .gani files and creating fake level tabs — gani files now route to the gani editor properly",
+      "Fixed duplicate tabs when opening a gani file from the level editor's file picker or drop handler",
+      "Added deduplication in TabManager.addTab to prevent duplicate tabs by type+name"
+    ]
+  },
+  {
+    "version": "0.1.50",
+    "date": "2026-04-26",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed gani editor keyboard shortcuts firing in inactive tabs — spacebar no longer triggers gani playback while in level editor play mode",
+      "Removed unused New Tileset button and stub from level editor",
+      "Level editor NPC list now auto-refreshes when placing or deleting NPCs instead of requiring manual refresh",
+      "Extra windows now respond properly to the title bar buttons, so the spawned window can be closed, minimized, and maximized like the main one",
+      "Setshape now lets you zoom in much further without turning the image blurry, making close-up editing much easier",
+      "Setimgpart gets a more detailed guide grid when you zoom in, while regular Setshape keeps the normal 16x16 tile grid",
+      "The image shown behind Setshape is brighter and easier to see while you work",
+      "Fixed level editor merging all layers together when an empty tile placeholder is present",
+      "Fixed layer visibility checkboxes in the right panel not working — clicking a checkbox no longer accidentally triggers layer selection at the same time",
+      "Flood Fill now tiles the active tileset stamp pattern across the filled region — select a multi-tile pattern first, then flood fill to repeat it like carpet or flooring",
+      "Gani editor can now export animations as GIF, MP4, or WebM via the Export button in the toolbar — choose scale (1x–8x), direction, padding, and background color",
+      "Fixed the Fade Inactive Layers button — it now fades layers that are unchecked in the layers panel instead of fading all non-current layers",
+      "The Image File field in Add Sprite can now be typed into directly — typing a filename that exists in the image library updates the preview immediately"
+    ]
+  },
+  {
+    "version": "0.1.49",
+    "date": "2026-04-16",
+    "tag": "GSuite",
+    "changes": [
+      "Gani editor and level editor now share the same Custom CSS dialog flow, including the working Example open/save behavior",
+      "Custom CSS now persists correctly across app restart instead of being wiped when the saved color scheme reapplies on startup",
+      "Choosing a built-in color scheme now clears the saved custom CSS cleanly instead of leaving old overrides behind",
+      "Suite tabs now show a floating preview thumbnail while you drag them, similar to browser tab dragging",
+      "Level editor settings now use the full gani font list, share the same saved font choices, and use a font-size dropdown instead of a slider",
+      "Level editor NPC script editor can now be resized directly from the window corner"
+    ]
+  },
+  {
+    "version": "0.1.48",
+    "date": "2026-04-16",
+    "tag": "GSuite",
+    "changes": [
+      "Code Beautify now uses working custom dropup menus for language and indent settings without duplicate controls showing in the footer",
+      "Level editor built-in objects now include a Character placement button that creates a showcharacter NPC preloaded with a starter script and nickname",
+      "Level editor object-list tables now pick up the active color scheme correctly on startup instead of waiting until you switch themes"
+    ]
+  },
+  {
+    "version": "0.1.47",
+    "date": "2026-04-15",
+    "tag": "GSuite",
+    "changes": [
+      "Level editor now has rebindable shortcuts for Toggle Grid, Center View, Snap to Grid, and swapping the primary/secondary tile selection",
+      ".gmap suite tabs now use the same icon as Gmap Generator instead of the generic level tab icon",
+      "Fixed issue where MNG was not loading in play mode",
+      "Fixed a level editor bug where drawing with a tile stamp could also place the current primary dropper tile at the same time"
+    ]
+  },
+  {
+    "version": "0.1.46",
+    "date": "2026-04-15",
+    "tag": "GSuite",
+    "changes": [
+      "Gani editor split-view drag origin indicator now only shows in the active direction quadrant instead of all four directions while dragging",
+      "Setshape2/setimgpart editor now keeps the yellow setimgpart box editable after selection so you can move or resize it before opening the output, with Shift-to-snap support",
+      "When the Setshape2/setimgpart editor is open, dropping common image files in web or Tauri mode now imports them into the tool instead of falling through to suite tab/file drop handling",
+      "Code Beautify and Setshape2 now open as suite tabs, update the app title correctly, and keep the shared color scheme dropdown usable above the tab strip",
+      "Suite tabs now show type-specific icons for levels and utility tools",
+      "The Setshape2/setimgpart and Code Beautify dialogs can now be resized directly from the window corner",
+      "Monaco-based editors now share a single Graal script syntax/highlighting setup so colorization stays consistent across level editor, gani editor, and code beautify",
+      "Monaco autocomplete rows now keep their icons aligned correctly instead of overlapping suggestion text"
+    ]
+  },
+  {
+    "version": "0.1.45",
+    "date": "2026-04-14",
+    "tag": "GSuite",
+    "changes": [
+      "Right-click canceling a tile-object stamp now clears reliably, including repeated Use as Stamp and cancel cycles without falling through to draw-mode tile picking",
+      "GIF images now animate in play mode and display as a static first frame in editor mode, matching MNG behavior",
+      ".graal and .zelda files now save correctly as binary instead of plain text"
+    ]
+  },
+  {
+    "version": "0.1.44",
+    "date": "2026-04-14",
+    "tag": "GSuite",
+    "changes": [
+      "Level editor tile selection Delete now fills with the current dropper preview tile instead of clearing to empty",
+      "Moving a tile selection now backfills the original area with the current dropper preview tile and preserves captured tile values more reliably",
+      "Resizing a level tile selection smaller now previews the tile content shrinking with the box instead of leaving the old outer tiles visually behind",
+      "Cutting a level tile selection now leaves the current dropper preview tile behind instead of hard-clearing to tile 0/empty",
+      "Refresh Tileset now invalidates cached tileset image data before reloading so file changes are picked up more reliably",
+      "Level editor now has rebindable one-key tool shortcuts for Select, Draw, Erase, and Flood Fill, and those tool button tooltips show the current bound key",
+      "Editor color scheme and custom CSS now persist cleanly across restart without being wiped when the theme reapplies on startup",
+      "Switching back to the default theme or applying empty custom CSS now fully clears the live custom stylesheet instead of leaving stale overrides behind"
+    ]
+  },
+  {
+    "version": "0.1.43",
+    "date": "2026-04-13",
+    "tag": "GSuite",
+    "changes": [
+      "Default level list now refreshes from levels/index.json correctly in web mode instead of showing a stale cached list",
+      "Level editor NPC nicknames now align more cleanly under the actual drawn character",
+      "Level editor play-mode nick/chat font size defaults are now 20 and the settings sliders use the shared custom slider styling",
+      "Level editor debug overlay 2 now shows type 0 tiles instead of skipping normal non-blocking tiles",
+      "Level editor tiletype debug overlay now uses cached tile-type lookups to cut per-frame overhead",
+      "Gani editor settings now include the Tauri Register File Associations action too",
+      "Web mode now shows the Setshape2 and Gmap Generator buttons on the right side of the shared in-page toolbar, while Tauri keeps them in the title bar",
+      "Closing the last suite tabs now clears the saved level/gani/tab session state instead of restoring stale tabs on restart",
+      "Tab close actions now force an immediate session save so stale pre-close tab state is less likely to come back on restart",
+      "Startup session restore now only reopens level/gani tabs that still exist in the shared suite tab list"
+    ]
+  },
+  {
+    "version": "0.1.42",
+    "date": "2026-04-13",
+    "tag": "GSuite",
+    "changes": [
+      "Fixed the level editor startup canvas gap/green void so the viewport fills correctly on load",
+      "Fixed the stray blank gani/Untitled.gani startup case so a gani tab is no longer auto-created when none should open"
+    ]
+  },
+  {
+    "version": "0.1.41",
+    "date": "2026-04-12",
+    "tag": "GSuite",
+    "changes": [
+      "Merged gani/level editor properly into a single form factor so you don't need to 'switch' to the gani editor and vice versa",
+      "Mousewheel zoom now zooms toward mouse position in both gani and level editors",
+      "Suite tabs can be reordered by drag-and-drop with live movement instead of a drop marker",
+      "Close All now closes actual suite tabs instead of only the current editor's local tab list",
+      "Gani editor grid defaults to on for new users while still respecting saved preference",
+      "Selected gani sprite pieces now have rotation anchors tied to the same rotation value used by the left panel and saved output",
+      "Sprite editor left-panel rotation now applies across multiple selected gani sprites at once",
+      "Gani box-select no longer gets stuck as easily when dragging off-canvas",
+      "Open File from the gani side now shows the shared level formats too for the universal editor flow",
+      "Level editor objects and NPCs now support multi-selection for moving, copying, cutting, pasting, and deleting"
+    ]
+  },
+  {
+    "version": "0.1.40",
+    "date": "2026-04-07",
+    "tag": "GSuite",
+    "changes": [
+      "Setshape2 output box no longer overflows its container",
+      "Setshape2 output switched to textarea for reliable clamping",
+      "Setshape2 GS2 output no longer wraps first argument in quotes",
+      "Gani/level editor About button now uses the shared GSuite info dialog",
+      "Fixed .nw/.gmap files bleeding into gani editor tabs when dropping while in gani mode"
+    ]
+  },
+  {
+    "version": "1.0.95",
+    "date": "2026-04-07",
+    "tag": "Level Editor",
+    "changes": [
+      "Fixed production crash: setupEventListeners now correctly declared async",
+      "Fixed missing script append in injectLevel causing green screen on load",
+      "Drop handler now correctly routes level files only to level editor, not gani editor"
+    ]
+  },
+  {
+    "version": "0.1.39",
+    "date": "2026-04-07",
+    "tag": "GSuite",
+    "changes": [
+      "Mobile play mode controls (iPad/touch): dual analog sticks for movement and sword attack, grab hold button, noclip toggle button",
+      "Pinch-to-zoom with snap-to-factor and zoom-to-point for both main canvas and tileset",
+      "Touch selection and drag on tileset canvas with proper finger tracking",
+      "Double-tap detection for touch-based actions",
+      "Safari/iPad layout fixes (flex-basis, splitter height)",
+      "Application icon updated"
+    ]
+  },
+  {
+    "version": "1.0.94",
+    "date": "2026-04-07",
+    "tag": "Level Editor",
+    "changes": [
+      "Mobile play mode controls: left stick (movement), right stick (attack in all 4 directions), GRAB hold button, NOCLIP toggle button",
+      "Pinch-to-zoom snaps to clean zoom factors to prevent sub-pixel rendering artifacts",
+      "Zoom-to-point keeps the content under your fingers stable during pinch",
+      "Tileset canvas supports touch selection, drag, and pinch zoom",
+      "Auto-centers level view when canvas resizes and level is offscreen",
+      "Safari/iPad fixes: bottom gap resolved, splitter adapts to viewport correctly",
+      "Layer thumbnails improved: better scaling, centered, subtle border"
+    ]
+  },
+  {
+    "version": "0.1.38",
+    "date": "2026-04-06",
+    "tag": "GSuite",
+    "changes": [
+      "Color scheme and custom CSS now shared globally between both editors"
+    ]
+  },
+  {
+    "version": "1.0.93",
+    "date": "2026-04-06",
+    "tag": "Level Editor",
+    "changes": [
+      "Skin recoloring now matches actual body sprite pixels (palette RGB corrected)",
+      "Player settings skin color defaults to blank (—) instead of brown",
+      "Canvas controls W/H inputs now show active tile selection dimensions, blank when none; up/down spinners resize selection"
+    ]
+  },
+  {
+    "version": "0.1.37",
+    "date": "2026-04-06",
+    "tag": "GSuite",
+    "changes": [
+      "Auto-update no longer force-installs on launch — prompts with Update Now / Later dialog",
+      "\"Skip this version\" checkbox remembers dismissed updates per version"
+    ]
+  },
+  {
+    "version": "1.0.92",
+    "date": "2026-04-06",
+    "tag": "Level Editor",
+    "changes": [
+      "Tile Objects — Export button downloads all user-created groups as a JSON file",
+      "Tile Objects — Import button merges groups from a JSON file into the current library",
+      "Theme menu — Custom CSS option added (import, export, apply, clear) with Monaco editor and live injection",
+      "Custom CSS persisted to localStorage and restored on startup"
+    ]
+  },
+  {
+    "version": "0.1.35",
+    "date": "2026-04-06",
+    "tag": "GSuite",
+    "changes": [
+      "Setshape2/setimgpart Editor — dialog title renamed to Setshape2/setimgpart Editor",
+      "Setshape2/setimgpart Editor — Cut button renamed to Setimgpart",
+      "Setshape2/setimgpart Editor — output areas now use syntax-highlighted pre elements (keywords, numbers, strings colored)",
+      "Setshape2/setimgpart Editor — Ctrl+Z/Y undo/redo (50-step history) for tile paint, clear, and import operations",
+      "About dialog — draggable by titlebar",
+      "example-theme.css — covers both editors; level editor classes, Setshape2, and Gmap Generator dialogs now themeable",
+      "Setshape2 and Gmap Generator dialogs — dialog-content and dialog-titlebar classes added for custom CSS targeting"
+    ]
+  },
+  {
+    "version": "1.0.91",
+    "date": "2026-04-06",
+    "tag": "Level Editor",
+    "changes": [
+      "Layer save fix — higher layers now only write BOARD lines for non-empty tile runs, matching TilesEditor format",
+      "objects/index.json now fetched instead of directory listing, works correctly in web/nginx deployments"
+    ]
+  },
+  {
+    "version": "0.1.33",
+    "date": "2026-04-06",
+    "tag": "GSuite",
+    "changes": [
+      "Auto-updater — checks for updates on launch, downloads and installs silently, restarts automatically",
+      "Check for Updates button added to both editor toolbars (Tauri only)",
+      "Default objects loaded on startup",
+      "Color scheme skins titlebar, layer panel, tileset scrollbar, zoom sliders, Setshape2, Gmap Generator, Monaco autocomplete, and active tool buttons",
+      "About dialog shared across both editors with working changelog tab and credits",
+      "Update dialog and about menu background fixes",
+      "Tileset zoom slider skinned by color schemes",
+      "Global custom scrollbar styling"
+    ]
+  },
+  {
+    "version": "1.0.9",
+    "date": "2026-04-02",
+    "tag": "Level Editor",
+    "changes": [
+      "Layers panel — new Layers tab in right panel with thumbnail preview of each layer's tiles",
+      "Layers panel — Add/Delete buttons to dynamically create or remove layers (max 8)",
+      "Layers panel — click a layer row to switch active layer; visibility checkbox per layer",
+      "Layers panel — Up/Down arrow buttons and drag-to-reorder for changing layer draw order",
+      "Layers panel — active layer highlighted in blue; layer spinbox max updates dynamically"
+    ]
+  },
+  {
+    "version": "2.1.3",
+    "date": "2026-04-01",
+    "tag": "Gani Editor",
+    "changes": [
+      "Tauri: native file dialogs, workspace indexing, lazy image loading from disk (no RAM preload)",
+      "Tauri: FILENAMECACHE.txt — workspace file index persisted to disk (classic level format: relative/path,crc32), no rescan on restart",
+      "Tauri: workspace scan streams results progressively via event-based chunks, UI stays responsive during indexing",
+      "PeerJS P2P collaboration — real-time multi-user editing with cursor sync, sprite changes, and frame updates"
+    ]
+  },
+  {
+    "version": "1.0.8",
+    "date": "2026-03-30",
+    "tag": "Level Editor",
+    "changes": [
+      "Play mode — walk around the level with WASD/arrow keys, full tile collision, camera follow, Shift to toggle noclip",
+      "Play mode — NPC collision using full image bounds; setshape(1,w,h) and setshape2(tw,th,{array}) override via NPC script",
+      "Play mode — link warping between levels with enter-edge detection to prevent looping",
+      "Play mode — link helper: walk to a position and press Spacebar to pin link destination using player collision center",
+      "Play mode — link helper shows rubber-band tile selection and confirm dialog (Accept/Retry/Cancel) with editable fields",
+      "Play mode — GS1 script parsing: setcharani, this.ani, this.head/body/shield, setcharprop (#1/#2/#3/#8/#m/#c/#n/#g/C0-C4/P0+), this.colors[], this.nick",
+      "Play mode — NPC nickname and guild displayed above character",
+      "Play mode — sitting tile detection using player collision center",
+      "Play mode — debug overlay (key 2) shows NPC hitboxes, link bounds, player collision box, sitting tile highlights",
+      "Play mode — edit bypass toggle (key 3) to double-click and edit objects without exiting play mode",
+      "Player settings dialog — customize HEAD, BODY, SHIELD, SWORD, HAT, colors, and per-action ganis",
+      "Player settings dialog — animated preview canvas with pan/drag, scroll-wheel zoom, +/- buttons, 4-direction d-pad, double-click to recenter",
+      "NW parser fix — level names with spaces (e.g. 'new 2.nw') no longer corrupt link x/y/width fields; binary level link parser patched to match",
+      "Link serialization — empty nextLevel writes as '-' placeholder to keep token count valid on reload"
+    ]
+  },
+  {
+    "version": "2.1.2b",
+    "date": "2026-03-29",
+    "tag": "Gani Editor",
+    "changes": [
+      "Encrypted or binary .gani files are now rejected with an error on direct load (file picker, drag & drop, reload) — silently ignored when browsing from workspace",
+      "Right-clicking a tab shows a context menu — Rename, Close, Close to the Left, Close to the Right (bulk close prompts confirmation)",
+      "Sprite selection now uses pixel-accurate hit testing — clicking no longer selects sprites whose bounding box overlaps the cursor but whose actual pixels do not"
+    ]
+  },
+  {
+    "version": "2.1.2",
+    "date": "2026-03-29",
+    "tag": "Gani Editor",
+    "changes": [
+      "Workspace browser: clicking a gani now opens it in a new tab instead of importing sprites",
+      "Workspace browser: search now uses fuzzy matching — type characters in order, no need for exact match",
+      "Open Default dialog no longer shows workspace ganis — only uses the built-in ganis/ list",
+      "Tab bar now has scroll buttons when many tabs are open instead of growing taller"
+    ]
+  },
+  {
+    "version": "2.1.1f",
+    "date": "2026-03-29",
+    "tag": "Gani Editor",
+    "changes": [
+      "Added workspace browser for browsing gani and sound files from the current workspace directory",
+      "Workspace loading now loads images in parallel batches — large workspaces load significantly faster"
+    ]
+  },
+  {
+    "version": "2.1.1e",
+    "date": "2026-03-29",
+    "tag": "Gani Editor",
+    "changes": [
+      "Drag and drop a .gani file anywhere onto the page to open it in a new tab — supports dropping multiple files at once"
+    ]
+  },
+  {
+    "version": "1.0.7",
+    "date": "2026-03-29",
+    "tag": "Level Editor",
+    "changes": [
+      ".graal and .zelda binary format support — open, view, and save classic Graal/Zelda Online levels",
+      "Zelda format enforces object restrictions — NPC and Chest placement blocked for .zelda tabs",
+      "Binary tile RLE decoder with LSB-first bitstream (12-bit V0/V1, 13-bit V2/V3)",
+      "Sign text decoded/encoded using classic character table and control code sequences",
+      "Tileset switching now works for all images in fileCache (not just file-picker uploads)",
+      "Tileset persists when switching tabs — levels with default tileset inherit the combo selection",
+      "Tab bar scrolls horizontally instead of wrapping to multiple rows",
+      "pics1.gif added to default tileset combo list"
+    ]
+  },
+  {
+    "version": "2.1.1d",
+    "date": "2026-03-28",
+    "tag": "Gani Editor",
+    "changes": [
+      "Fixed canvas blanking out after uploading a gani — canvas now resizes correctly on tab switch",
+      "Fixed _sx is not defined crash when drawing sprites without loaded images",
+      "Center View no longer resets zoom — only centers pan to grid origin",
+      "Zoom buttons and keyboard zoom no longer drift the view — pan is now properly adjusted to keep center anchored"
+    ]
+  },
+  {
+    "version": "2.1.1c",
+    "date": "2026-03-27",
+    "tag": "Gani Editor",
+    "changes": [
+      "Fixed drag origin indicator — was incorrectly showing after drop instead of during drag",
+      "Right-clicking or pressing Escape while dragging a sprite cancels the drag and snaps it back to its origin",
+      "Drag origin line and dot scaled up for high-resolution displays"
+    ]
+  },
+  {
+    "version": "2.1.1b",
+    "date": "2026-03-26",
+    "tag": "Gani Editor",
+    "changes": [
+      "Right-clicking a sprite or on the canvas shows a context menu — Edit Sprite, Copy/Cut/Delete, Paste, Add, Center View",
+      "Pixel grid toggle button added to canvas controls",
+      "Keybinds moved to Settings dialog (Settings | Canvas | Keybinds tabs) — F1 opens About, F2 opens Settings",
+      "System fonts loaded via queryLocalFonts() where available",
+      "Drag selection box selects and deselects sprites live as you drag",
+      "About/Info dialog is now a fixed height — switching to Changelog no longer resizes the window"
+    ]
+  },
+  {
+    "version": "2.1.1",
+    "date": "2026-03-26",
+    "tag": "Gani Editor",
+    "changes": [
+      "Monaco editor (VS Code engine) used for Edit Script and Custom CSS dialogs — gscript syntax highlighting",
+      "GScript autocomplete and hover docs in Edit Script — powered by api.gscript.dev",
+      "Custom CSS variables --canvas-bg, --canvas-grid, --timeline-bg, --preview-bg, --monaco-theme and more for full theming",
+      "All custom dialogs (Confirm, Alert, Settings, Edit Script, Custom CSS) now have titled headers",
+      "Multi-frame timeline selection — Shift/Ctrl+click frames then drag to move as a group",
+      "Ctrl+C/X/V to copy/cut/paste selected canvas pieces",
+      "Fixed Lights mode (EFFECTMODE 0) creating visual duplication"
+    ]
+  },
+  {
+    "version": "1.0.6",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "NPC showcharacter renders idle.gani character in the level",
+      "setcharani support — GS1 and GS2 both parsed",
+      "this.head/body/shield overrides gani defaults if file is in working dir cache",
+      "this.colors[0-4] recolors BODY sprites using the standard character palette",
+      "Screenshot excludes NPC placeholders, selection highlight, signs, and links",
+      "Working dir scan batched (64 parallel) with UI yield between batches",
+      "Color scheme palette button added to toolbar"
+    ]
+  },
+  {
+    "version": "1.0.5",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "GS1/GS2 syntax checker in NPC editor — flags unclosed strings, mismatched braces/parens/brackets",
+      "Layer visibility toggles — show/hide Layer 1, 2, 3 independently",
+      "Tile selection copy/paste: right-click to clone as stamp, Ctrl+C/V",
+      "NPC click priority over links",
+      "Fixed link resize handles misfiring at low zoom levels"
+    ]
+  },
+  {
+    "version": "1.0.4",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "Save level now uses the tab name as the filename",
+      "Save As prompts to rename and downloads with the new name",
+      "Right-click a tab to rename, save as, or close it",
+      "GMAP save dialog — Save All or Save Changed, downloads a ZIP",
+      "Tile Objects now includes all 5 groups: Standard, Castle, House Inside, Snow, Volcano"
+    ]
+  },
+  {
+    "version": "1.0.3",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "Undo/redo now covers NPC, link, sign, and chest add/delete",
+      "Double-clicking an NPC in the NPC list opens its script editor",
+      "Link resize anchors fixed — hit detection now matches rendered handle positions exactly"
+    ]
+  },
+  {
+    "version": "1.0.2",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "Edit Links and Edit Signs now open popup dialogs matching C++ TilesEditor",
+      "Add Link and Add Sign buttons use the active tile selection for position and size",
+      "Add Link and Add Sign icons updated — composite SVGs"
+    ]
+  },
+  {
+    "version": "2.1.0",
+    "date": "2026-03-25",
+    "tag": "Gani Editor",
+    "changes": [
+      "Unified info menu combining About, Keybinds, and Changelog into one tabbed dialog (F1)",
+      "Timeline zoom via Ctrl+Scroll (desktop) and pinch-to-zoom (mobile)",
+      "Custom CSS support via theme menu — import, export, and live-apply your own stylesheet",
+      "Multi-frame timeline selection — Shift/Ctrl+click frames then drag to move as a group",
+      "All keybinds now rebindable in the Keybinds tab",
+      "Ctrl+A select all sprites, [ / ] layer down/up, Shift+Tab adds next sprite to selection",
+      "Styled tooltips on all toolbar and playback buttons"
+    ]
+  },
+  {
+    "version": "1.0.1",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "Tile stamp now places on click — no longer requires dragging to paint",
+      "Load Tileset button adds the loaded file to the tileset combo list and selects it",
+      "Clicking and dragging an NPC/object now works on first click without prior selection"
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-03-28",
+    "tag": "Level Editor",
+    "changes": [
+      "Initial release — object selection, drag-to-place, right-click cancel, mousewheel zoom",
+      "Working dir chest/baddy/npc images shown in level",
+      "Multi-tab session persistence — all open tabs restored on page reload",
+      "Monaco NPC script editor with GScript LSP",
+      "Flip H/V and rotate tile selection",
+      "About dialog with changelog tab"
+    ]
+  }
+]

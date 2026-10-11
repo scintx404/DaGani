@@ -1,0 +1,17 @@
+{
+  "fixed": {
+    "file_version": "0.1.85",
+    "product_version": "0.1.85"
+  },
+  "info": {
+    "0000": {
+      "ProductVersion": "0.1.85",
+      "CompanyName": "MorenoLand",
+      "FileDescription": "GSuite desktop editor",
+      "LegalCopyright": "Copyright (c) MorenoLand",
+      "ProductName": "GSuite",
+      "Comments": "GSuite desktop editor",
+      "FileVersion": "0.1.85"
+    }
+  }
+}

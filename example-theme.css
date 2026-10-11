@@ -1,0 +1,387 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GRAALSUITE — NEON SYNTHWAVE THEME
+   Works in both the Gani Editor and Level Editor.
+   Paste into Theme → Custom CSS... in either editor.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── Canvas / timeline / preview overrides ──────────────────── */
+:root {
+    --canvas-bg: #0d0025;
+    --canvas-grid: #440066;
+    --timeline-bg: #080015;
+    --preview-bg: #0d001a;
+    --monaco-theme: neon-synthwave;
+    --slider-box-shadow: inset 0px 2px 0px 0px #550088, inset 0px -2px 0px 0px #550088, inset -2px 0px 0px 0px #550088, inset 2px 0px 0px 0px #550088, 0px 2px 0px 0px #0a0015, 2px 0px 0px 0px #0a0010, -2px 0px 0px 0px #0a0010, 0px -2px 0px 0px #0a0010, 0px 4px 0px 0px rgba(10,0,25,.8);
+    --timeline-frame-bg: #2a0044;
+    --timeline-frame-selected-bg: #003320;
+    --timeline-frame-multi-bg: #001a3a;
+    --quadrant-divider: #9900ff;
+    --timeline-ruler-bg: #1a0033;
+    --timeline-ruler-tick: #9900ff;
+    --timeline-ruler-text: #cc88ff;
+    --selection-border-color: #ff00ff;
+    --selection-border-thickness: 2;
+    --selection-border-opacity: 1;
+    --icon-filter: brightness(0) invert(0.6) sepia(1) saturate(4) hue-rotate(250deg);
+    --dialog-icon-filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(250deg);
+    --tooltip-bg: #1a0030;
+    --tooltip-color: #ff88ff;
+    --tooltip-border: 1px solid #ff00ff88;
+    --tooltip-radius: 4px;
+    --tooltip-font-size: 11px;
+}
+
+/* ── Global / Body ──────────────────────────────────────────── */
+body { background: #0a0010 !important; color: #e0d0ff !important; font-family: 'Courier New', monospace !important; }
+* { box-sizing: border-box; }
+
+/* ── Wails titlebar ─────────────────────────────────────────── */
+#wailsBar { background: linear-gradient(90deg, #0d001a, #1a0030, #0d001a) !important; border-bottom: 1px solid #ff00ff44 !important; }
+#wailsBar .tb-title { color: #cc88ff !important; }
+#wailsBar button:not(.tb-winbtn) { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+#wailsBar button:not(.tb-winbtn):hover { background: #330066 !important; color: #ff88ff !important; border-color: #ff00ff !important; box-shadow: 0 0 8px #ff00ff66 !important; }
+#wailsBar .tb-winbtn { background: transparent !important; color: #9966cc !important; }
+#wailsBar .tb-winbtn:hover { background: #330066 !important; color: #ff88ff !important; }
+#wailsBar .tb-close:hover { background: #6b1a1a !important; color: #ff4466 !important; }
+
+/* ── Toolbar ────────────────────────────────────────────────── */
+.toolbar { background: linear-gradient(90deg, #0d001a, #1a0030, #0d001a) !important; border-bottom: 2px solid #ff00ff66 !important; box-shadow: 0 2px 18px #ff00ff44 !important; padding: 6px 8px !important; gap: 6px !important; }
+.toolbar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #660099 !important; border-radius: 4px !important; padding: 7px 10px !important; transition: all 0.15s !important; }
+.toolbar button:hover { background: #330066 !important; color: #ff88ff !important; border-color: #ff00ff !important; box-shadow: 0 0 10px #ff00ff88 !important; }
+.toolbar button.active { background: #ff00ff !important; color: #000 !important; border-color: #ff88ff !important; box-shadow: 0 0 14px #ff00ffcc !important; }
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+.tabs { background: #080018 !important; border-bottom: 1px solid #330055 !important; }
+.tab { background: #0d001a !important; border-color: #330055 !important; color: #9966cc !important; border-radius: 4px 4px 0 0 !important; margin-right: 2px !important; }
+.tab.active { background: #1a0035 !important; border-color: #9900ff !important; color: #ff88ff !important; box-shadow: inset 0 2px 0 #ff00ff !important; }
+.tab:hover { background: #1a0030 !important; color: #cc88ff !important; }
+.tab-close:hover { color: #ff00ff !important; background: rgba(255,0,255,0.15) !important; }
+
+/* ── Left panel ─────────────────────────────────────────────── */
+.left-panel { background: #0d0020 !important; border-color: #330055 !important; min-width: 220px !important; }
+
+/* ── Sprite toolbar (add/edit/delete buttons row) ───────────── */
+.sprite-toolbar { background: #080018 !important; border-bottom: 1px solid #330055 !important; padding: 5px !important; gap: 4px !important; }
+.sprite-toolbar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 4px !important; padding: 5px 8px !important; transition: all 0.15s !important; }
+.sprite-toolbar button:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+
+/* ── Sprite list & items ────────────────────────────────────── */
+.sprites-list { background: #080015 !important; }
+.sprite-item { background: #110025 !important; border: 1px solid #330055 !important; border-radius: 5px !important; transition: border-color 0.1s, box-shadow 0.1s !important; padding: 4px !important; }
+.sprite-item:hover { border-color: #cc00ff !important; box-shadow: 0 0 8px #cc00ff66 !important; }
+.sprite-item.selected { border: 2px solid #ff00ff !important; box-shadow: 0 0 12px #ff00ffaa !important; background: #1f0040 !important; }
+.sprite-item.multi-selected { border: 2px solid #ff6600 !important; box-shadow: 0 0 10px #ff660088 !important; }
+
+/* ── Sprite edit panel ──────────────────────────────────────── */
+.sprite-edit-panel { background: #0a001a !important; border-top: 1px solid #330055 !important; }
+.sprite-settings { background: #0a001a !important; }
+.sprite-settings label { color: #aa66ff !important; }
+.sprite-preview { background: #050010 !important; border: 1px solid #330055 !important; border-radius: 4px !important; }
+
+/* ── Sliders ────────────────────────────────────────────────── */
+.slider-group { background: #0d0020 !important; gap: 6px !important; }
+input[type=range] { background: transparent !important; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none !important; background: #cc00ff !important; border: none !important; box-shadow: 0 0 8px #ff00ffaa, var(--slider-box-shadow) !important; }
+input[type=range]::-moz-range-thumb { background: #cc00ff !important; border: 3px solid #550088 !important; box-shadow: 0 0 6px #ff00ffaa !important; }
+
+/* ── All panel inputs / selects ─────────────────────────────── */
+.left-panel input:not([type=range]), .right-panel input:not([type=range]),
+.left-panel select, .right-panel select,
+.left-panel textarea, .right-panel textarea { background: #1a003a !important; color: #e0c0ff !important; border: 1px solid #550088 !important; box-shadow: none !important; border-radius: 3px !important; }
+.left-panel input:focus, .right-panel input:focus { outline: 1px solid #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+.left-panel label, .right-panel label { color: #aa66ff !important; }
+#colorSwatch { border: 1px solid #660099 !important; border-radius: 3px !important; }
+
+/* ── Custom checkbox spans ──────────────────────────────────── */
+.custom-checkbox { background: #1a003a !important; border: 1px solid #660099 !important; color: #ff44ff !important; border-radius: 2px !important; }
+
+/* ── Right panel ────────────────────────────────────────────── */
+.right-panel { background: #0d0020 !important; border-color: #330055 !important; }
+.direction-selector { background: #080018 !important; border-bottom: 1px solid #330055 !important; padding: 8px !important; }
+.direction-selector label { color: #ff44ff !important; font-weight: bold !important; }
+.settings-group { background: #0d0020 !important; border-color: #330055 !important; padding: 8px !important; }
+.settings-group h3 { color: #ff44ff !important; text-shadow: 0 0 8px #ff00ff88 !important; border-bottom: 1px solid #440066 !important; padding-bottom: 5px !important; margin-bottom: 6px !important; }
+.right-panel button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 3px !important; transition: all 0.15s !important; }
+.right-panel button:hover { background: #330066 !important; color: #ff88ff !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+.item-controls button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+.item-controls button:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+
+/* ── History list ───────────────────────────────────────────── */
+#historyList { background: #0d0020 !important; border: 1px solid #550088 !important; color: #bb88ff !important; }
+#historyList div { border-bottom-color: #220044 !important; color: #bb88ff !important; }
+#historyList div:hover { background: #1a0035 !important; color: #ff88ff !important; }
+
+/* ── Sounds list ────────────────────────────────────────────── */
+.sounds-list { background: #0d0020 !important; border: 1px solid #550088 !important; }
+.sounds-list li { color: #cc88ff !important; border-bottom: 1px solid #220044 !important; }
+.sounds-list li.selected, .sounds-list li:hover { background: #1a0035 !important; color: #ff88ff !important; }
+
+/* ── Canvas ─────────────────────────────────────────────────── */
+.canvas-container { background: #050010 !important; }
+.canvas-controls { gap: 5px !important; padding: 5px !important; }
+.canvas-controls button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 4px !important; padding: 6px 8px !important; }
+.canvas-controls button:hover { background: #330066 !important; box-shadow: 0 0 8px #ff00ff66 !important; }
+.canvas-controls button.active { background: #cc00ff !important; color: #fff !important; box-shadow: 0 0 12px #cc00ffaa !important; }
+
+/* ── Timeline ───────────────────────────────────────────────── */
+.timeline-container { min-height: 160px !important; }
+.timeline-container { background: linear-gradient(180deg, #0d001a, #0a0015) !important; border-top: 2px solid #ff00ff44 !important; }
+.timeline-header { background: #080018 !important; border-bottom: 1px solid #220044 !important; padding: 5px 8px !important; }
+.timeline-header label, .timeline-header .frame-count, .timeline-header span { color: #cc88ff !important; }
+.timeline-view { background: #050010 !important; }
+
+/* ── Playback controls ──────────────────────────────────────── */
+.playback-controls { background: #0a0018 !important; border-top: 1px solid #330055 !important; padding: 6px 5px 10px !important; gap: 4px !important; }
+.playback-controls button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 4px !important; padding: 7px 10px !important; transition: all 0.15s !important; }
+.playback-controls button:hover { background: #330066 !important; color: #ff88ff !important; box-shadow: 0 0 10px #ff00ff66 !important; }
+
+/* ── Splitters ──────────────────────────────────────────────── */
+.splitter-handle { background: #110022 !important; transition: background 0.15s, box-shadow 0.15s !important; box-shadow: 0 0 4px #9900ff44 !important; }
+.splitter-handle:hover { background: #330055 !important; box-shadow: 0 0 10px #ff00ffaa !important; }
+.splitter-handle > div { background: #aa00ff !important; border-radius: 2px !important; box-shadow: 0 0 6px #ff00ff88 !important; }
+
+/* ── Dialogs ────────────────────────────────────────────────── */
+.dialog-overlay { background: rgba(10, 0, 30, 0.85) !important; }
+.dialog-overlay > div { background: #0d0020 !important; border: 2px solid #660099 !important; box-shadow: 0 0 30px #9900ff55, 0 0 60px #ff00ff22 !important; color: #e0c0ff !important; border-radius: 6px !important; }
+.dialog-content { background: #0d0020 !important; border: 1px solid #660099 !important; box-shadow: 0 0 30px #9900ff55, 0 0 60px #ff00ff22 !important; color: #e0c0ff !important; border-radius: 6px !important; }
+.dialog-content h2, .dialog-content h3, .dialog-overlay > div h2, .dialog-overlay > div h3 { color: #ff44ff !important; text-shadow: 0 0 6px #ff00ff66 !important; }
+.dialog-content button, .dialog-overlay > div button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 4px !important; }
+.dialog-content button:hover, .dialog-overlay > div button:hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+.dialog-content select, .dialog-content input, .dialog-content textarea,
+.dialog-overlay > div select, .dialog-overlay > div input, .dialog-overlay > div textarea { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+.dialog-content label, .dialog-overlay > div label { color: #aa66ff !important; }
+.dialog-overlay > div > div { color: #e0c0ff !important; }
+
+/* ── Default open dialog list items ─────────────────────────── */
+.default-gani-item { background: #0d0020 !important; color: #cc88ff !important; border-bottom: 1px solid #220044 !important; }
+.default-gani-item:hover { background: #1a0035 !important; color: #ff88ff !important; }
+.default-gani-item.selected { background: #2a0055 !important; color: #ff44ff !important; border-left: 3px solid #ff00ff !important; }
+/* ── Dialog tab buttons ─────────────────────────────────────── */
+.info-tab-btn, .settings-tab-btn, .defaultOpen-tab-btn { color: #cc88ff !important; border-color: #330055 !important; }
+.info-tab-btn.active, .settings-tab-btn.active, .defaultOpen-tab-btn.active { background: #1a0035 !important; color: #ff44ff !important; }
+.info-tab-btn:hover, .settings-tab-btn:hover, .defaultOpen-tab-btn:hover { background: #1a003a !important; }
+/* ── Splitter grip indicator ────────────────────────────────── */
+.splitter-grip { background: #9900ff !important; opacity: 0.5 !important; }
+
+/* ── Scrollbars ─────────────────────────────────────────────── */
+* { scrollbar-color: #550088 #0a0015 !important; }
+*::-webkit-scrollbar-track { background: #0a0015 !important; }
+*::-webkit-scrollbar-thumb { background: #550088 !important; border-color: #0a0015 !important; border-radius: 6px !important; }
+*::-webkit-scrollbar-thumb:hover { background: #880099 !important; }
+*::-webkit-scrollbar-corner { background: #0a0015 !important; }
+
+/* ── Theme switcher menu items ──────────────────────────────── */
+.color-scheme-item { background: #0d001a !important; color: #cc88ff !important; border-bottom: 1px solid #220044 !important; }
+.color-scheme-item:hover { background: #1a003a !important; color: #ff88ff !important; }
+
+/* ── Dialog title bar ───────────────────────────────────────── */
+.dialog-titlebar { background: #110022 !important; border-bottom: 2px solid #550088 !important; }
+.dialog-titlebar span { color: #cc88ff !important; }
+.dialog-titlebar i.fas { filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(250deg) !important; }
+.dialog-titlebar img:not(.titlebar-logo) { filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(250deg) !important; }
+#infoContent { background: #0d0020 !important; color: #e0c0ff !important; }
+#infoClose { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+#infoClose:hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+
+/* ── Context menus ──────────────────────────────────────────── */
+.context-menu { background: #0d0020 !important; border: 1px solid #660099 !important; border-top-color: #9900ff !important; box-shadow: 0 4px 16px #9900ff44, 0 0 0 1px #330055 !important; }
+.context-menu-item { color: #cc88ff !important; }
+.context-menu-item:hover { background: #1a0035 !important; color: #ff88ff !important; }
+.context-menu-item.disabled { color: #440066 !important; }
+.context-menu-item > span:first-child { background: #1a003a !important; border-color: #660099 !important; color: #ff44ff !important; }
+
+/* ── Color scheme dropdown ──────────────────────────────────── */
+#colorSchemeDropdown { background: #0d0020 !important; border-color: #550088 !important; box-shadow: 0 4px 16px #ff00ff33 !important; }
+
+/* ── Custom CSS button in theme menu ────────────────────────── */
+#btnCustomCSS { color: #ff44ff !important; background: #0d001a !important; border-top: 1px solid #220044 !important; }
+#btnCustomCSS:hover { background: #1a0035 !important; color: #ff88ff !important; }
+
+/* ── Custom CSS dialog (Gani + Level Editor) ────────────────── */
+#customCSSTextarea { background: #080015 !important; color: #e0c0ff !important; border-bottom: 1px solid #440066 !important; }
+#cssApply, #levelCssApply { background: #003a1a !important; color: #44ff88 !important; border-color: #006633 !important; }
+#cssApply:hover, #levelCssApply:hover { background: #005522 !important; box-shadow: 0 0 6px #00ff8866 !important; }
+#cssClear, #levelCssClear { background: #3a0010 !important; color: #ff4466 !important; border-color: #660022 !important; }
+#cssClear:hover, #levelCssClear:hover { background: #550018 !important; box-shadow: 0 0 6px #ff004466 !important; }
+#cssImport, #cssExport, #cssClose, #levelCssImport, #levelCssExport, #levelCssClose { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+#cssImport:hover, #cssExport:hover, #cssClose:hover, #levelCssImport:hover, #levelCssExport:hover, #levelCssClose:hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+#cssExample, #levelCssExample { background: #1a003a !important; color: #ff44ff !important; border-color: #550088 !important; }
+#cssExample:hover, #levelCssExample:hover { color: #ff88ff !important; border-color: #ff00ff !important; }
+
+/* ── Info/keybind tab buttons ───────────────────────────────── */
+.info-tab-btn, .settings-tab-btn { background: transparent !important; color: #9966cc !important; border-bottom: 2px solid transparent !important; padding: 10px 16px !important; border-radius: 4px 4px 0 0 !important; }
+.info-tab-btn:hover, .settings-tab-btn:hover { color: #ff88ff !important; }
+.info-tab-btn.active, .settings-tab-btn.active { color: #ff44ff !important; border-bottom-color: #ff00ff !important; }
+.keybind-edit-btn { background: #1a003a !important; border: 1px solid #660099 !important; color: #cc88ff !important; }
+.keybind-edit-btn:hover { border-color: #ff00ff !important; color: #ff88ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+
+/* ── Scrollbars ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: #0a0015; }
+::-webkit-scrollbar-thumb { background: #660099; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #ff00ff; box-shadow: 0 0 6px #ff00ff; }
+
+/* ── Tooltips ───────────────────────────────────────────────── */
+button[data-title]:hover::after { background: #1a003a !important; color: #ff88ff !important; border-color: #660099 !important; box-shadow: 0 0 8px #ff00ff66 !important; border-radius: 4px !important; z-index: 10005 !important; }
+
+/* ── Custom dropdowns ───────────────────────────────────────── */
+.custom-dropdown-button { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+.custom-dropdown-button:hover, .custom-dropdown-button:active { background: #330066 !important; border-color: #cc00ff !important; }
+.custom-dropdown { background: #0d0020 !important; border-color: #550088 !important; box-shadow: 0 4px 12px #9900ff44 !important; }
+.custom-dropdown-item { color: #cc88ff !important; border-bottom-color: #220044 !important; }
+.custom-dropdown-item:hover { background: #1a0035 !important; color: #ff88ff !important; }
+.custom-dropdown-item.selected { background: #2a0055 !important; color: #ff44ff !important; }
+
+/* ── Settings checkboxes ────────────────────────────────────── */
+#settingsPixelRenderingCheckbox, #settingsAutoSaveCheckbox, #settingsShowGridCheckbox,
+#settingsGifAnimationsCheckbox, #settingsLightEffectsCheckbox,
+#clearStorageCheckbox { background: #1a003a !important; border: 1px solid #660099 !important; color: #ff44ff !important; border-radius: 2px !important; }
+
+/* ── Defaults table ─────────────────────────────────────────── */
+.defaults-table th { background: #1a0035 !important; color: #cc88ff !important; border-color: #550088 !important; }
+.defaults-table td { border-color: #330055 !important; color: #e0c0ff !important; }
+.defaults-table tr:hover td { background: #110025 !important; }
+
+/* ── Links ──────────────────────────────────────────────────── */
+a { color: #ff44ff !important; }
+a:hover { color: #ff88ff !important; text-shadow: 0 0 6px #ff00ff; }
+
+/* ── Edit/Add Sprite dialog ─────────────────────────────────── */
+:root {
+    --dialog-bg: #0d0020;
+    --dialog-text: #cc88ff;
+    --dialog-input-bg: #08000f;
+    --dialog-border: #550088;
+    --dialog-button-bg: #1a003a;
+    --dialog-button-text: #cc88ff;
+    --sprite-preview-grid: #9900ff;
+    --sprite-preview-selection: #ff00ff;
+}
+.add-sprite-dialog-left { background: #0d0020 !important; color: #cc88ff !important; }
+.add-sprite-dialog-group { background: #0d0020 !important; border-color: #550088 !important; }
+.add-sprite-dialog-group > div:first-child { color: #cc88ff !important; }
+.add-sprite-dialog-right { background: #0d0020 !important; color: #cc88ff !important; }
+.add-sprite-dialog-preview { background: #08000f !important; border-color: #550088 !important; }
+.add-sprite-dialog-button-bar { background: #0d0020 !important; }
+
+/* ── Level Editor ────────────────────────────────────────────── */
+.level-toolbar { background: linear-gradient(90deg, #0d001a, #1a0030, #0d001a) !important; border-bottom: 1px solid #ff00ff44 !important; }
+.level-toolbar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 3px !important; }
+.level-toolbar button:hover, .level-toolbar button.active { background: #330066 !important; color: #ff88ff !important; border-color: #ff00ff !important; box-shadow: 0 0 8px #ff00ff66 !important; }
+.level-area { background: #0a0010 !important; }
+.center-panel { background: #0a0010 !important; }
+.canvas-controls-bar { background: #0d001a !important; border-top: 1px solid #330055 !important; color: #aa66ff !important; }
+.canvas-controls-bar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 3px !important; }
+.canvas-controls-bar button:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+.object-library-panel { background: #0d0020 !important; border-color: #330055 !important; }
+.object-library-header { background: #080018 !important; border-bottom: 1px solid #220044 !important; color: #aa66ff !important; }
+.object-library-content { background: #0d0020 !important; }
+.left-panel-tabs { background: #080018 !important; border-bottom: 1px solid #330055 !important; }
+.left-tab { background: transparent !important; color: #9966cc !important; border: none !important; }
+.left-tab.active { color: #ff44ff !important; border-bottom: 2px solid #ff00ff !important; }
+.left-tab:hover { color: #cc88ff !important; }
+.right-tabs { background: #0d0020 !important; border-color: #330055 !important; }
+.tab-bar { background: #080018 !important; border-bottom: 1px solid #330055 !important; }
+.tab-bar .tab { background: transparent !important; color: #9966cc !important; border-color: #330055 !important; }
+.tab-bar .tab.active { color: #ff44ff !important; background: #1a0035 !important; border-bottom: 2px solid #ff00ff !important; }
+.tab-bar .tab:hover { color: #cc88ff !important; }
+.tab-panel { background: #0d0020 !important; }
+.tileset-toolbar { background: #080018 !important; border-bottom: 1px solid #220044 !important; }
+.tileset-toolbar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+.tileset-toolbar button:hover { background: #330066 !important; border-color: #cc00ff !important; }
+.status-bar { background: #0d001a !important; border-top: 1px solid #440066 !important; color: #9966cc !important; }
+.tool-dropdown-menu { background: #0d0020 !important; border-color: #550088 !important; box-shadow: 0 4px 12px #9900ff44 !important; }
+.tool-dropdown-menu label { color: #cc88ff !important; }
+.tool-dropdown-menu label:hover { background: #1a0035 !important; color: #ff88ff !important; }
+
+/* ── Setshape2 / Gmap Generator dialogs ─────────────────────── */
+#_ss2Dialog .dialog-content { background: #0d0020 !important; border-color: #660099 !important; }
+#_ss2Dialog .dialog-titlebar { background: #110022 !important; border-bottom-color: #550088 !important; }
+#_ss2Dialog [data-ss2="picker"] { background: #080018 !important; }
+#_ss2Dialog [data-ss2="container"] { background: #1a0030 !important; }
+#_gmgDialog .dialog-content { background: #0d0020 !important; border-color: #660099 !important; }
+#_gmgDialog .dialog-titlebar { background: #110022 !important; border-bottom-color: #550088 !important; }
+#_gmgDialog input, #_gmgDialog select, #_gmgDialog textarea { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+#_gmgDialog label { color: #aa66ff !important; }
+#_gmgDialog button:not(#_gmgClose) { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+#_gmgDialog button:not(#_gmgClose):hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+
+/* ── Level toolbar inputs ────────────────────────────────────── */
+#layerSpinbox { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+#tilesetsCombo { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+#brushWidth, #brushHeight, #tileTranslucencyValue { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+
+/* ── Tile selection toolbar ──────────────────────────────────── */
+.tile-selection-toolbar { background: #0d0020 !important; border-top: 1px solid #330055 !important; padding: 4px 6px !important; }
+.tile-selection-toolbar button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+.tile-selection-toolbar button:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+
+/* ── Object library / tree ──────────────────────────────────── */
+#objectTree { background: #0d0020 !important; color: #cc88ff !important; border-color: #550088 !important; }
+#objectsDir, #objectsLibDir { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+#btnBrowseObjectsDir, #btnBrowseObjectsLib, #btnExportNPC2 { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+#btnBrowseObjectsDir:hover, #btnBrowseObjectsLib:hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+
+/* ── Tile Objects tab ───────────────────────────────────────── */
+#tileObjectGroup, #tileObjectName { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+#btnNewTileObjectGroup, #btnDeleteTileObjectGroup, #btnNewTileObject, #btnDeleteTileObject { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+#btnNewTileObjectGroup:hover, #btnDeleteTileObjectGroup:hover, #btnNewTileObject:hover, #btnDeleteTileObject:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+#btnExportTileObjects, #btnImportTileObjects { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; }
+#btnExportTileObjects:hover, #btnImportTileObjects:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 6px #cc00ff88 !important; }
+#tileObjectPreview { border-color: #550088 !important; background: #0d0020 !important; }
+#btnUseTileObject { background: #3a0070 !important; color: #e0c0ff !important; border-color: #8800ff !important; }
+#btnUseTileObject:hover { background: #5500aa !important; border-color: #cc00ff !important; box-shadow: 0 0 8px #cc00ff88 !important; }
+
+/* ── Object buttons (Baddy / NPC / Chest / Sign / Link) ─────── */
+.object-button { background: #1a003a !important; color: #cc88ff !important; border: 1px solid #550088 !important; border-radius: 4px !important; }
+.object-button:hover { background: #330066 !important; border-color: #cc00ff !important; box-shadow: 0 0 8px #cc00ff88 !important; }
+
+/* ── NPC / object tables ─────────────────────────────────────── */
+#objects-tab .settings-group > div > table { background: #0d0020 !important; border-color: #550088 !important; }
+#objects-tab thead tr { background: #1a0035 !important; }
+#objects-tab th { color: #cc88ff !important; border-color: #330055 !important; }
+#objects-tab td { color: #e0c0ff !important; border-color: #330055 !important; }
+#npcListBody tr:hover td { background: #1a0035 !important; }
+#objects-tab > div > div > div { background: #0d0020 !important; border-color: #550088 !important; }
+
+/* ── Layers panel ────────────────────────────────────────────── */
+#layers-tab > div:first-child { background: #0d0020 !important; border-color: #330055 !important; }
+#btnAddLayer, #btnDeleteLayer { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+#btnAddLayer:hover, #btnDeleteLayer:hover { background: #330066 !important; border-color: #ff00ff !important; }
+#layersList { background: #0d0020 !important; }
+
+/* ── All level editor dialogs (ed-dialog-box) ───────────────── */
+.ed-dialog-box { background: #0d0020 !important; border-color: #660099 !important; box-shadow: 0 0 30px #9900ff55 !important; color: #e0c0ff !important; }
+.ed-dialog-box input:not([type=range]):not([type=checkbox]):not([type=radio]), .ed-dialog-box select, .ed-dialog-box textarea { background: #1a003a !important; color: #e0c0ff !important; border-color: #550088 !important; }
+.ed-dialog-box button { background: #1a003a !important; color: #cc88ff !important; border-color: #550088 !important; }
+.ed-dialog-box button:hover { background: #330066 !important; border-color: #ff00ff !important; box-shadow: 0 0 6px #ff00ff66 !important; }
+.ed-dialog-box label { color: #aa66ff !important; }
+.ed-dialog-box table { background: #0d0020 !important; }
+.ed-dialog-box thead tr, .ed-dialog-box tr[style*="background:#2a2a2a"] { background: #1a0035 !important; }
+.ed-dialog-box th { color: #cc88ff !important; border-color: #330055 !important; }
+.ed-dialog-box td { color: #e0c0ff !important; border-color: #330055 !important; }
+.ed-dialog-box tr:hover td { background: #1a003a !important; }
+.ed-dialog-box [style*="background:#353535"], .ed-dialog-box [style*="background: #353535"] { background: #110022 !important; border-color: #550088 !important; }
+.ed-dialog-box [style*="background:#2b2b2b"], .ed-dialog-box [style*="background: #2b2b2b"] { background: #0d0020 !important; }
+.ed-dialog-box [style*="background:#1e1e1e"], .ed-dialog-box [style*="background: #1e1e1e"] { background: #080015 !important; }
+
+/* ── Edit Links / Edit Signs titlebar + toolbars ────────────── */
+.ed-dialog-box .dialog-titlebar { background: #110022 !important; border-bottom: 1px solid #550088 !important; color: #cc88ff !important; }
+.ed-dialog-box .dialog-titlebar span { color: #e0c0ff !important; }
+.ed-dialog-box .dialog-toolbar { background: #110022 !important; border-top: 1px solid #550088 !important; }
+
+/* ── Player Settings dialog ─────────────────────────────────── */
+#_playerDlg > div[style*="display:flex"] > div[style*="border-right"] { background: #0d0020 !important; border-color: #330055 !important; }
+#_playerDlg > div[style*="display:flex"] > div[style*="background:#1e1e1e"] { background: #080015 !important; }
+#_playerDlg [style*="color:#888"] { color: #8844bb !important; }
+#_playerDlg [data-play] { background: #0d2200 !important; color: #66ff88 !important; border-color: #225500 !important; }
+#_playerDlg [data-play]:hover { background: #1a4400 !important; border-color: #55cc00 !important; }
+#_pcPreview { border-color: #550088 !important; background: #0a000f !important; }
+#_pcPreviewLabel { color: #8844bb !important; }
+
+/* ── Custom scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0d0020; }
+::-webkit-scrollbar-thumb { background: #550088; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #8800cc; box-shadow: 0 0 6px #cc00ff88; }
+::-webkit-scrollbar-corner { background: #0d0020; }
